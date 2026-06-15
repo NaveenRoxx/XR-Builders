@@ -1,1257 +1,1734 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>XR BUILDERS</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --neon-cyan: #00f5ff;
-    --neon-purple: #b400ff;
-    --neon-green: #00ff88;
-    --neon-orange: #ff6b00;
-    --deep-bg: #020818;
-    --panel-bg: rgba(5, 20, 50, 0.7);
-    --panel-border: rgba(0, 245, 255, 0.15);
-    --panel-border-glow: rgba(0, 245, 255, 0.4);
-    --text-primary: #e8f4ff;
-    --text-secondary: rgba(180, 210, 255, 0.7);
-    --text-dim: rgba(100, 150, 200, 0.5);
-  }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XR BUILDERS — Immersive XR Solutions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    <style>
+        :root {
+            --neon-cyan: #00f5ff;
+            --neon-purple: #b400ff;
+            --neon-green: #00ff88;
+            --neon-orange: #ff6b00;
+            --neon-yellow: #ffe600;
+            --deep-bg: #020818;
+            --panel-bg: rgba(5,20,50,0.7);
+            --panel-border: rgba(0,245,255,0.15);
+            --panel-glow: rgba(0,245,255,0.4);
+            --text-primary: #e8f4ff;
+            --text-sec: rgba(180,210,255,0.7);
+            --text-dim: rgba(100,150,200,0.5);
+        }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
 
-  html { scroll-behavior: smooth; }
+        html {
+            scroll-behavior: smooth
+        }
 
-  body {
-    font-family: 'Rajdhani', sans-serif;
-    background: var(--deep-bg);
-    color: var(--text-primary);
-    overflow-x: hidden;
-    cursor: none;
-  }
+        body {
+            font-family: 'Rajdhani',sans-serif;
+            background: var(--deep-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            cursor: none
+        }
 
-  /* CUSTOM CURSOR */
-  .cursor {
-    position: fixed;
-    width: 16px; height: 16px;
-    border-radius: 50%;
-    background: var(--neon-cyan);
-    pointer-events: none;
-    z-index: 99999;
-    transition: transform 0.1s ease;
-    mix-blend-mode: screen;
-    box-shadow: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
-  }
-  .cursor-ring {
-    position: fixed;
-    width: 40px; height: 40px;
-    border-radius: 50%;
-    border: 1px solid rgba(0,245,255,0.4);
-    pointer-events: none;
-    z-index: 99998;
-    transition: transform 0.15s ease, width 0.2s, height 0.2s;
-  }
+        /* CURSOR */
+        .cursor {
+            position: fixed;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--neon-cyan);
+            pointer-events: none;
+            z-index: 99999;
+            transition: transform .1s ease;
+            mix-blend-mode: screen;
+            box-shadow: 0 0 10px var(--neon-cyan),0 0 20px var(--neon-cyan)
+        }
 
-  /* ANIMATED GRID BACKGROUND */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(0, 245, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
-    background-size: 60px 60px;
-    z-index: 0;
-    animation: gridShift 20s linear infinite;
-  }
-  @keyframes gridShift {
-    0% { background-position: 0 0; }
-    100% { background-position: 60px 60px; }
-  }
+        .cursor-ring {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(0,245,255,.4);
+            pointer-events: none;
+            z-index: 99998;
+            transition: transform .15s ease,width .2s,height .2s
+        }
 
-  /* FLOATING PARTICLES */
-  .particles {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-  .particle {
-    position: absolute;
-    width: 2px; height: 2px;
-    background: var(--neon-cyan);
-    border-radius: 50%;
-    animation: float linear infinite;
-    opacity: 0;
-  }
-  @keyframes float {
-    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-    10% { opacity: 0.6; }
-    90% { opacity: 0.3; }
-    100% { transform: translateY(-10vh) translateX(30px); opacity: 0; }
-  }
+        /* GRID BG */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: linear-gradient(rgba(0,245,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.03) 1px,transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+            animation: gridShift 20s linear infinite
+        }
 
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 1000;
-    padding: 0 40px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(2, 8, 24, 0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 245, 255, 0.1);
-  }
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    text-decoration: none;
-  }
-  .nav-logo-icon {
-    width: 42px; height: 42px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 13px;
-    font-weight: 900;
-    color: #000;
-    position: relative;
-    overflow: hidden;
-  }
-  .nav-logo-icon::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3));
-    animation: shimmer 3s ease infinite;
-  }
-  @keyframes shimmer {
-    0%, 100% { opacity: 0; }
-    50% { opacity: 1; }
-  }
-  .nav-logo-text {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 1px;
-  }
-  .nav-logo-sub {
-    font-size: 10px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .nav-links {
-    display: flex;
-    gap: 32px;
-    list-style: none;
-  }
-  .nav-links a {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    text-decoration: none;
-    position: relative;
-    transition: color 0.3s;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    left: 0; bottom: -4px;
-    width: 0; height: 1px;
-    background: var(--neon-cyan);
-    transition: width 0.3s;
-    box-shadow: 0 0 6px var(--neon-cyan);
-  }
-  .nav-links a:hover { color: var(--neon-cyan); }
-  .nav-links a:hover::after { width: 100%; }
-  .nav-cta {
-    padding: 8px 20px;
-    border: 1px solid var(--neon-cyan);
-    border-radius: 4px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--neon-cyan);
-    text-decoration: none;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .nav-cta::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: var(--neon-cyan);
-    transform: translateX(-100%);
-    transition: transform 0.3s;
-    z-index: -1;
-  }
-  .nav-cta:hover { color: #000; }
-  .nav-cta:hover::before { transform: translateX(0); }
+        @keyframes gridShift {
+            0% {
+                background-position: 0 0
+            }
 
-  /* HERO */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 120px 40px 80px;
-    position: relative;
-    text-align: center;
-    overflow: hidden;
-  }
+            100% {
+                background-position: 60px 60px
+            }
+        }
 
-  /* Hero VR helmet illustration */
-  .hero-orb {
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, rgba(0,245,255,0.08), rgba(180,0,255,0.05) 50%, transparent 70%);
-    border: 1px solid rgba(0,245,255,0.08);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse 4s ease-in-out infinite;
-  }
-  .hero-orb-2 {
-    position: absolute;
-    width: 900px; height: 900px;
-    border-radius: 50%;
-    border: 1px solid rgba(180,0,255,0.05);
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse 6s ease-in-out infinite reverse;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
-    50% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
-  }
+        /* SCANLINE */
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg,transparent,rgba(0,245,255,.25),transparent);
+            z-index: 9997;
+            animation: scan 10s linear infinite;
+            pointer-events: none
+        }
 
-  /* Floating XR device icon */
-  .hero-device {
-    position: relative;
-    z-index: 2;
-    margin-bottom: 40px;
-  }
-  .hero-device svg {
-    width: 120px;
-    height: 70px;
-    filter: drop-shadow(0 0 20px rgba(0,245,255,0.6)) drop-shadow(0 0 40px rgba(0,245,255,0.3));
-    animation: deviceFloat 3s ease-in-out infinite;
-  }
-  @keyframes deviceFloat {
-    0%, 100% { transform: translateY(0) rotateX(0deg); }
-    50% { transform: translateY(-12px) rotateX(5deg); }
-  }
+        @keyframes scan {
+            0% {
+                top: 0
+            }
 
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 6px 18px;
-    border: 1px solid rgba(0,245,255,0.3);
-    border-radius: 2px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--neon-cyan);
-    margin-bottom: 32px;
-    position: relative;
-    z-index: 2;
-    background: rgba(0,245,255,0.05);
-  }
-  .hero-badge::before {
-    content: '';
-    width: 6px; height: 6px;
-    background: var(--neon-cyan);
-    border-radius: 50%;
-    animation: blink 1.5s ease infinite;
-    box-shadow: 0 0 8px var(--neon-cyan);
-  }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.2; }
-  }
+            100% {
+                top: 100vh
+            }
+        }
 
-  .hero h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(28px, 5vw, 56px);
-    font-weight: 900;
-    line-height: 1.15;
-    margin-bottom: 12px;
-    position: relative;
-    z-index: 2;
-    background: linear-gradient(135deg, #fff 0%, var(--neon-cyan) 50%, var(--neon-purple) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    letter-spacing: -1px;
-  }
-  .hero-subtitle {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 28px;
-    position: relative;
-    z-index: 2;
-  }
-  .hero p {
-    max-width: 680px;
-    margin: 0 auto 48px;
-    font-size: 17px;
-    line-height: 1.8;
-    color: var(--text-secondary);
-    position: relative;
-    z-index: 2;
-    font-weight: 400;
-  }
+        /* PARTICLES */
+        .particles {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden
+        }
 
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-bottom: 72px;
-    position: relative;
-    z-index: 2;
-  }
-  .btn-primary {
-    padding: 14px 36px;
-    background: var(--neon-cyan);
-    color: #000;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 3px;
-    cursor: none;
-    text-decoration: none;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0,245,255,0.4);
-  }
-  .btn-primary:hover {
-    box-shadow: 0 0 40px rgba(0,245,255,0.7);
-    transform: translateY(-2px);
-  }
-  .btn-secondary {
-    padding: 14px 36px;
-    background: transparent;
-    color: var(--text-primary);
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 3px;
-    cursor: none;
-    text-decoration: none;
-    transition: all 0.3s;
-  }
-  .btn-secondary:hover {
-    border-color: rgba(255,255,255,0.5);
-    background: rgba(255,255,255,0.05);
-  }
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--neon-cyan);
+            border-radius: 50%;
+            animation: float linear infinite;
+            opacity: 0
+        }
 
-  /* Stats bar */
-  .hero-stats {
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    position: relative;
-    z-index: 2;
-    border: 1px solid var(--panel-border);
-    border-radius: 4px;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-    background: rgba(0,245,255,0.03);
-  }
-  .hero-stat {
-    padding: 20px 40px;
-    text-align: center;
-    position: relative;
-  }
-  .hero-stat:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    right: 0; top: 20%; bottom: 20%;
-    width: 1px;
-    background: var(--panel-border);
-  }
-  .hero-stat .num {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 24px;
-    font-weight: 700;
-    color: var(--neon-cyan);
-    display: block;
-    text-shadow: 0 0 20px rgba(0,245,255,0.5);
-  }
-  .hero-stat .lbl {
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-top: 4px;
-    display: block;
-  }
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0
+            }
 
-  /* SECTIONS */
-  section {
-    padding: 100px 40px;
-    position: relative;
-    z-index: 1;
-  }
-  .container { max-width: 1100px; margin: 0 auto; }
+            10% {
+                opacity: .6
+            }
 
-  .section-tag {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--neon-cyan);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .section-tag::before {
-    content: '';
-    width: 30px; height: 1px;
-    background: var(--neon-cyan);
-    box-shadow: 0 0 6px var(--neon-cyan);
-  }
+            90% {
+                opacity: .3
+            }
 
-  .section-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(24px, 3vw, 38px);
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 20px;
-    line-height: 1.2;
-  }
-  .section-title span { color: var(--neon-cyan); }
-  .section-desc {
-    font-size: 16px;
-    line-height: 1.8;
-    color: var(--text-secondary);
-    max-width: 640px;
-    margin-bottom: 60px;
-  }
+            100% {
+                transform: translateY(-10vh) translateX(30px);
+                opacity: 0
+            }
+        }
 
-  /* PANEL CARDS */
-  .panel {
-    background: var(--panel-bg);
-    border: 1px solid var(--panel-border);
-    border-radius: 6px;
-    backdrop-filter: blur(10px);
-    position: relative;
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-  .panel::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0,245,255,0.03) 0%, transparent 50%);
-    pointer-events: none;
-  }
-  .panel:hover {
-    border-color: var(--panel-border-glow);
-    transform: translateY(-4px);
-  }
-  .panel:hover::after {
-    content: '';
-    position: absolute;
-    inset: -1px;
-    border-radius: 6px;
-    background: transparent;
-    box-shadow: 0 0 20px rgba(0,245,255,0.15);
-    pointer-events: none;
-  }
+        /* MARQUEE TICKER */
+        .ticker-wrap {
+            overflow: hidden;
+            border-top: 1px solid rgba(0,245,255,.08);
+            border-bottom: 1px solid rgba(0,245,255,.08);
+            background: rgba(0,245,255,.02);
+            padding: 10px 0;
+            position: relative;
+            z-index: 1
+        }
 
-  /* CORNER DECORATIONS */
-  .corner-tl, .corner-br {
-    position: absolute;
-    width: 14px; height: 14px;
-    border-color: var(--neon-cyan);
-    border-style: solid;
-    opacity: 0.5;
-  }
-  .corner-tl { top: 8px; left: 8px; border-width: 1px 0 0 1px; }
-  .corner-br { bottom: 8px; right: 8px; border-width: 0 1px 1px 0; }
+        .ticker-track {
+            display: flex;
+            gap: 0;
+            animation: tickerScroll 35s linear infinite;
+            white-space: nowrap
+        }
 
-  /* MISSION VISION */
-  .mv-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 24px;
-  }
-  .mv-card {
-    padding: 36px;
-  }
-  .mv-icon {
-    width: 48px; height: 48px;
-    border-radius: 4px;
-    border: 1px solid var(--neon-cyan);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    margin-bottom: 20px;
-    color: var(--neon-cyan);
-    background: rgba(0,245,255,0.05);
-    box-shadow: 0 0 15px rgba(0,245,255,0.1);
-  }
-  .mv-card h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 14px;
-    color: var(--text-primary);
-  }
-  .mv-card p {
-    font-size: 15px;
-    line-height: 1.8;
-    color: var(--text-secondary);
-  }
+        .ticker-item {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            padding: 0 40px;
+            flex-shrink: 0
+        }
 
-  /* XR SHOWCASE — new immersive section */
-  .xr-section {
-    background: linear-gradient(180deg, rgba(180,0,255,0.04) 0%, transparent 100%);
-    border-top: 1px solid rgba(180,0,255,0.1);
-    border-bottom: 1px solid rgba(180,0,255,0.1);
-  }
-  .xr-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 24px;
-  }
-  .xr-card {
-    padding: 28px;
-    border-color: rgba(180,0,255,0.2);
-  }
-  .xr-card:hover { border-color: rgba(180,0,255,0.5); }
-  .xr-icon {
-    font-size: 36px;
-    margin-bottom: 16px;
-    display: block;
-    filter: drop-shadow(0 0 10px rgba(0,245,255,0.4));
-  }
-  .xr-card h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: var(--neon-cyan);
-    letter-spacing: 1px;
-  }
-  .xr-card p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; }
-  .xr-tag {
-    display: inline-block;
-    margin-top: 14px;
-    padding: 4px 12px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--neon-purple);
-    border: 1px solid rgba(180,0,255,0.3);
-    border-radius: 2px;
-    background: rgba(180,0,255,0.05);
-  }
+            .ticker-item span {
+                color: var(--neon-cyan);
+                margin-right: 8px
+            }
 
-  /* INDUSTRY IMPACT */
-  .industry-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-  .industry-card {
-    padding: 28px 20px;
-    text-align: center;
-    border-color: rgba(0,255,136,0.15);
-  }
-  .industry-card:hover { border-color: rgba(0,255,136,0.4); }
-  .industry-num {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 32px;
-    font-weight: 900;
-    color: var(--neon-green);
-    display: block;
-    text-shadow: 0 0 20px rgba(0,255,136,0.4);
-    margin-bottom: 8px;
-  }
-  .industry-label {
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    margin-bottom: 12px;
-    display: block;
-  }
-  .industry-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+        @keyframes tickerScroll {
+            0% {
+                transform: translateX(0)
+            }
 
-  /* SAFETY TRAINING SECTION */
-  .safety-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-  }
-  .safety-visual {
-    position: relative;
-    height: 400px;
-    border: 1px solid var(--panel-border);
-    border-radius: 6px;
-    overflow: hidden;
-    background: var(--panel-bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .safety-scene {
-    position: relative;
-    width: 200px; height: 200px;
-  }
-  .safety-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(0,245,255,0.2);
-    animation: ringPulse 3s ease-in-out infinite;
-  }
-  .safety-ring:nth-child(1) { inset: 0; animation-delay: 0s; }
-  .safety-ring:nth-child(2) { inset: -30px; animation-delay: 0.5s; }
-  .safety-ring:nth-child(3) { inset: -60px; animation-delay: 1s; }
-  @keyframes ringPulse {
-    0%, 100% { border-color: rgba(0,245,255,0.2); box-shadow: none; }
-    50% { border-color: rgba(0,245,255,0.5); box-shadow: 0 0 20px rgba(0,245,255,0.1) inset; }
-  }
-  .safety-center {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-    filter: drop-shadow(0 0 20px rgba(0,245,255,0.6));
-    animation: deviceFloat 3s ease-in-out infinite;
-  }
-  .safety-labels {
-    position: absolute;
-    inset: 0;
-  }
-  .safety-label-item {
-    position: absolute;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 8px;
-    letter-spacing: 2px;
-    color: var(--neon-cyan);
-    background: rgba(0,245,255,0.05);
-    border: 1px solid rgba(0,245,255,0.2);
-    padding: 4px 10px;
-    border-radius: 2px;
-    white-space: nowrap;
-    opacity: 0;
-    animation: labelAppear 4s ease infinite;
-  }
-  .safety-label-item:nth-child(1) { top: 20%; left: 5%; animation-delay: 0s; }
-  .safety-label-item:nth-child(2) { top: 40%; right: 5%; animation-delay: 1s; }
-  .safety-label-item:nth-child(3) { bottom: 20%; left: 10%; animation-delay: 2s; }
-  .safety-label-item:nth-child(4) { top: 65%; right: 8%; animation-delay: 3s; }
-  @keyframes labelAppear {
-    0%, 100% { opacity: 0; transform: translateX(-10px); }
-    20%, 80% { opacity: 1; transform: translateX(0); }
-  }
+            100% {
+                transform: translateX(-50%)
+            }
+        }
 
-  .safety-content h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 11px;
-    letter-spacing: 3px;
-    color: var(--neon-orange);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-  .safety-points { list-style: none; }
-  .safety-points li {
-    display: flex;
-    gap: 14px;
-    padding: 16px 0;
-    border-bottom: 1px solid rgba(0,245,255,0.06);
-    font-size: 15px;
-    line-height: 1.7;
-    color: var(--text-secondary);
-  }
-  .safety-points li::before {
-    content: '▸';
-    color: var(--neon-cyan);
-    font-size: 12px;
-    margin-top: 4px;
-    flex-shrink: 0;
-  }
-  .safety-points li strong { color: var(--text-primary); }
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 0 40px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(2,8,24,.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0,245,255,.1)
+        }
 
-  /* SERVICES */
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  .service-card { padding: 28px; }
-  .service-num {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    margin-bottom: 20px;
-    display: block;
-  }
-  .service-icon {
-    font-size: 28px;
-    margin-bottom: 14px;
-    display: block;
-    filter: drop-shadow(0 0 8px rgba(0,245,255,0.3));
-  }
-  .service-card h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: var(--text-primary);
-    letter-spacing: 0.5px;
-    line-height: 1.4;
-  }
-  .service-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
-  .service-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 16px;
-    padding: 4px 12px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: var(--neon-cyan);
-    border: 1px solid rgba(0,245,255,0.25);
-    border-radius: 2px;
-    background: rgba(0,245,255,0.04);
-  }
-  .service-badge::before {
-    content: '';
-    width: 4px; height: 4px;
-    background: var(--neon-cyan);
-    border-radius: 50%;
-    box-shadow: 0 0 6px var(--neon-cyan);
-  }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none
+        }
 
-  /* TECH STACK */
-  .tech-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 40px;
-  }
-  .tech-pill {
-    padding: 8px 20px;
-    border: 1px solid var(--panel-border);
-    border-radius: 2px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    color: var(--text-secondary);
-    background: rgba(0,245,255,0.02);
-    transition: all 0.3s;
-    cursor: none;
-    text-transform: uppercase;
-  }
-  .tech-pill:hover {
-    border-color: var(--neon-cyan);
-    color: var(--neon-cyan);
-    background: rgba(0,245,255,0.06);
-    box-shadow: 0 0 10px rgba(0,245,255,0.1);
-  }
+        .nav-logo-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: linear-gradient(135deg,var(--neon-cyan),var(--neon-purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron',sans-serif;
+            font-size: 13px;
+            font-weight: 900;
+            color: #000;
+            position: relative;
+            overflow: hidden
+        }
 
-  /* PROJECTS */
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-  .project-card {
-    padding: 0;
-    overflow: hidden;
-  }
-  .project-header-bar {
-    padding: 16px 24px;
-    border-bottom: 1px solid var(--panel-border);
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: rgba(0,245,255,0.02);
-  }
-  .project-num {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 11px;
-    color: var(--neon-cyan);
-    letter-spacing: 2px;
-  }
-  .project-title-text {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 0.5px;
-  }
-  .project-body {
-    padding: 24px;
-  }
-  .project-body p { font-size: 14px; color: var(--text-secondary); line-height: 1.7; margin-bottom: 20px; }
-  .project-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-  .ptag {
-    padding: 4px 12px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
-    letter-spacing: 2px;
-    border: 1px solid rgba(0,255,136,0.3);
-    color: var(--neon-green);
-    border-radius: 2px;
-    background: rgba(0,255,136,0.04);
-    text-transform: uppercase;
-  }
+            .nav-logo-icon::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg,transparent 40%,rgba(255,255,255,.3));
+                animation: shimmer 3s ease infinite
+            }
 
-  /* XR USE CASES — horizontal scroller */
-    .use-cases-scroll {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        margin-top: 0;
-        .use-case-card.full-width
+        @keyframes shimmer {
+            0%,100% {
+                opacity: 0
+            }
 
-    {
-        grid-column: 1 / -1;
-    }
-  }
-  .use-case-card {
-    padding: 24px;
-  }
-  .use-case-industry {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
-    letter-spacing: 3px;
-    color: var(--neon-orange);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-    display: block;
-  }
-  .use-case-card h4 {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-    letter-spacing: 0.5px;
-  }
-  .use-case-card p { font-size: 13px; color: var(--text-secondary); line-height: 1.7; }
-  .use-case-icon {
-    font-size: 28px;
-    display: block;
-    margin-bottom: 14px;
-    filter: drop-shadow(0 0 8px rgba(255,107,0,0.4));
-  }
+            50% {
+                opacity: 1
+            }
+        }
 
-  /* TEAM */
-  .team-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-  .team-card {
-    padding: 32px 24px;
-    text-align: center;
-  }
-  .avatar-wrap {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    margin: 0 auto 16px;
-    position: relative;
-  }
-  .avatar-wrap::before {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    background: conic-gradient(var(--neon-cyan), var(--neon-purple), var(--neon-cyan));
-    animation: spin 4s linear infinite;
-    z-index: 0;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .avatar {
-    position: relative;
-    z-index: 1;
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    background: var(--deep-bg);
-    color: var(--neon-cyan);
-  }
-  .team-card h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    margin-bottom: 6px;
-    color: var(--text-primary);
-    letter-spacing: 0.5px;
-  }
-  .team-card .role {
-    font-size: 13px;
-    color: var(--text-secondary);
-    margin-bottom: 12px;
-  }
-  .team-dept {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
-    letter-spacing: 2px;
-    padding: 4px 12px;
-    border: 1px solid var(--panel-border);
-    border-radius: 2px;
-    color: var(--text-dim);
-    display: inline-block;
-    text-transform: uppercase;
-  }
+        .nav-logo-text {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 1px
+        }
 
-  /* CONTACT */
-  .contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 48px;
-    align-items: start;
-  }
-  .contact-info-panel { padding: 40px; }
-  .contact-info-panel h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 32px;
-    color: var(--text-primary);
-  }
-  .contact-row {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 24px;
-    align-items: flex-start;
-  }
-  .contact-icon {
-    width: 36px; height: 36px;
-    border: 1px solid var(--panel-border);
-    border-radius: 4px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px;
-    flex-shrink: 0;
-    background: rgba(0,245,255,0.03);
-  }
-  .contact-label {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: var(--text-dim);
-    margin-bottom: 4px;
-    text-transform: uppercase;
-  }
-  .contact-val {
-    font-size: 14px;
-    color: var(--text-primary);
-    line-height: 1.5;
-  }
-  .contact-form-panel { padding: 40px; }
-  .contact-form-panel h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 28px;
-    color: var(--text-primary);
-  }
-  .form-row { margin-bottom: 18px; }
-  .form-row label {
-    display: block;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-dim);
-    margin-bottom: 8px;
-  }
-  .form-row input,
-  .form-row select,
-  .form-row textarea {
-    width: 100%;
-    padding: 12px 16px;
-    background: rgba(0,245,255,0.02);
-    border: 1px solid var(--panel-border);
-    border-radius: 3px;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-primary);
-    transition: border-color 0.3s;
-    outline: none;
-  }
-  .form-row input:focus,
-  .form-row select:focus,
-  .form-row textarea:focus {
-    border-color: var(--neon-cyan);
-    box-shadow: 0 0 10px rgba(0,245,255,0.1);
-  }
-  .form-row select option { background: #0a1628; }
-  .form-row textarea { height: 100px; resize: none; }
-  .submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: var(--neon-cyan);
-    color: #000;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    border: none;
-    border-radius: 3px;
-    cursor: none;
-    transition: all 0.3s;
-    box-shadow: 0 0 20px rgba(0,245,255,0.3);
-    margin-top: 8px;
-  }
-  .submit-btn:hover {
-    box-shadow: 0 0 40px rgba(0,245,255,0.6);
-    transform: translateY(-2px);
-  }
+        .nav-logo-sub {
+            font-size: 10px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            text-transform: uppercase
+        }
 
-  /* FOOTER */
-  footer {
-    background: rgba(0,0,0,0.6);
-    border-top: 1px solid var(--panel-border);
-    padding: 60px 40px 32px;
-    position: relative;
-    z-index: 1;
-  }
-  .footer-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .footer-top {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 48px;
-    margin-bottom: 48px;
-  }
-  .footer-brand h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 18px;
-    font-weight: 900;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-    background: linear-gradient(135deg, #fff, var(--neon-cyan));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  .footer-brand p {
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.7;
-    margin-top: 12px;
-  }
-  .footer-col h4 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--neon-cyan);
-    margin-bottom: 20px;
-  }
-  .footer-col ul { list-style: none; }
-  .footer-col ul li {
-    font-size: 13px;
-    color: var(--text-dim);
-    margin-bottom: 10px;
-    transition: color 0.2s;
-    cursor: none;
-  }
-  .footer-col ul li:hover { color: var(--text-secondary); }
-  .footer-divider { height: 1px; background: var(--panel-border); margin-bottom: 28px; }
-  .footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 12px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-  }
-  .footer-bottom a { color: var(--neon-cyan); text-decoration: none; }
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none
+        }
 
-  /* SCANLINE EFFECT */
-  .scanline {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(0,245,255,0.3), transparent);
-    z-index: 9997;
-    animation: scan 8s linear infinite;
-    pointer-events: none;
-  }
-  @keyframes scan {
-    0% { top: 0; }
-    100% { top: 100vh; }
-  }
+            .nav-links a {
+                font-family: 'Rajdhani',sans-serif;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--text-sec);
+                text-decoration: none;
+                position: relative;
+                transition: color .3s
+            }
 
-  /* SECTION DIVIDER */
-  .section-divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--panel-border), transparent);
-  }
+                .nav-links a::after {
+                    content: '';
+                    position: absolute;
+                    left: 0;
+                    bottom: -4px;
+                    width: 0;
+                    height: 1px;
+                    background: var(--neon-cyan);
+                    transition: width .3s;
+                    box-shadow: 0 0 6px var(--neon-cyan)
+                }
 
-  /* OVERVIEW VERTICALS */
-  .overview-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-  .overview-item {
-    display: flex;
-    gap: 16px;
-    padding: 20px 24px;
-    align-items: flex-start;
-  }
-  .overview-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--neon-cyan);
-    box-shadow: 0 0 8px var(--neon-cyan);
-    margin-top: 8px;
-    flex-shrink: 0;
-  }
-  .overview-item p {
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.7;
-  }
-  .overview-item p strong { color: var(--text-primary); }
+                .nav-links a:hover {
+                    color: var(--neon-cyan)
+                }
 
-  /* SCROLL REVEAL */
-  .reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.7s ease, transform 0.7s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+                    .nav-links a:hover::after {
+                        width: 100%
+                    }
 
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    nav { padding: 0 20px; }
-    .nav-links { display: none; }
-    section { padding: 60px 20px; }
-    .hero { padding: 100px 20px 60px; }
-    .mv-grid, .safety-layout, .contact-grid { grid-template-columns: 1fr; }
-    .xr-grid, .services-grid, .team-grid { grid-template-columns: 1fr 1fr; }
-    .industry-grid { grid-template-columns: 1fr 1fr; }
-    .projects-grid, .use-cases-scroll { grid-template-columns: 1fr; }
-    .footer-top { grid-template-columns: 1fr 1fr; }
-    .hero-stats { flex-direction: row; flex-wrap: wrap; }
-    .hero-stat { padding: 16px 24px; }
-  }
-  @media (max-width: 600px) {
-    .xr-grid, .services-grid, .team-grid { grid-template-columns: 1fr; }
-    .hero h1 { font-size: 26px; }
-  }
-</style>
+        .nav-cta {
+            padding: 8px 20px;
+            border: 1px solid var(--neon-cyan);
+            border-radius: 4px;
+            font-family: 'Rajdhani',sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--neon-cyan);
+            text-decoration: none;
+            transition: all .3s;
+            position: relative;
+            overflow: hidden
+        }
+
+            .nav-cta::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: var(--neon-cyan);
+                transform: translateX(-100%);
+                transition: transform .3s;
+                z-index: -1
+            }
+
+            .nav-cta:hover {
+                color: #000
+            }
+
+                .nav-cta:hover::before {
+                    transform: translateX(0)
+                }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 40px 80px;
+            position: relative;
+            text-align: center;
+            overflow: hidden
+        }
+
+        .hero-orb {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%,rgba(0,245,255,.08),rgba(180,0,255,.05) 50%,transparent 70%);
+            border: 1px solid rgba(0,245,255,.08);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            animation: pulse 4s ease-in-out infinite
+        }
+
+        .hero-orb-2 {
+            position: absolute;
+            width: 900px;
+            height: 900px;
+            border-radius: 50%;
+            border: 1px solid rgba(180,0,255,.05);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            animation: pulse 6s ease-in-out infinite reverse
+        }
+
+        @keyframes pulse {
+            0%,100% {
+                transform: translate(-50%,-50%) scale(1);
+                opacity: .5
+            }
+
+            50% {
+                transform: translate(-50%,-50%) scale(1.05);
+                opacity: 1
+            }
+        }
+
+        .hero-device {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 40px
+        }
+
+            .hero-device svg {
+                width: 140px;
+                height: 80px;
+                filter: drop-shadow(0 0 20px rgba(0,245,255,.6)) drop-shadow(0 0 40px rgba(0,245,255,.3));
+                animation: deviceFloat 3s ease-in-out infinite
+            }
+
+        @keyframes deviceFloat {
+            0%,100% {
+                transform: translateY(0) rotateX(0deg)
+            }
+
+            50% {
+                transform: translateY(-12px) rotateX(5deg)
+            }
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 18px;
+            border: 1px solid rgba(0,245,255,.3);
+            border-radius: 2px;
+            font-family: 'Orbitron',sans-serif;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--neon-cyan);
+            margin-bottom: 28px;
+            position: relative;
+            z-index: 2;
+            background: rgba(0,245,255,.05)
+        }
+
+            .hero-badge::before {
+                content: '';
+                width: 6px;
+                height: 6px;
+                background: var(--neon-cyan);
+                border-radius: 50%;
+                animation: blink 1.5s ease infinite;
+                box-shadow: 0 0 8px var(--neon-cyan)
+            }
+
+        @keyframes blink {
+            0%,100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .2
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Orbitron',sans-serif;
+            font-size: clamp(32px,6vw,72px);
+            font-weight: 900;
+            line-height: 1.05;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+            background: linear-gradient(135deg,#fff 0%,var(--neon-cyan) 50%,var(--neon-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px
+        }
+
+        .hero-sub {
+            font-family: 'Rajdhani',sans-serif;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 2
+        }
+
+        .hero-bio {
+            max-width: 680px;
+            margin: 0 auto 44px;
+            font-size: 17px;
+            line-height: 1.85;
+            color: var(--text-sec);
+            position: relative;
+            z-index: 2
+        }
+
+            .hero-bio span {
+                color: var(--neon-cyan);
+                font-weight: 600
+            }
+
+        .hero-actions {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 60px;
+            position: relative;
+            z-index: 2
+        }
+
+        .btn-primary {
+            padding: 14px 36px;
+            background: var(--neon-cyan);
+            color: #000;
+            font-family: 'Rajdhani',sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 3px;
+            cursor: none;
+            text-decoration: none;
+            transition: all .3s;
+            box-shadow: 0 0 20px rgba(0,245,255,.4)
+        }
+
+            .btn-primary:hover {
+                box-shadow: 0 0 40px rgba(0,245,255,.7);
+                transform: translateY(-2px)
+            }
+
+        .btn-secondary {
+            padding: 14px 36px;
+            background: transparent;
+            color: var(--text-primary);
+            font-family: 'Rajdhani',sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,.2);
+            border-radius: 3px;
+            cursor: none;
+            text-decoration: none;
+            transition: all .3s
+        }
+
+            .btn-secondary:hover {
+                border-color: rgba(255,255,255,.5);
+                background: rgba(255,255,255,.05)
+            }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            background: rgba(0,245,255,.02)
+        }
+
+        .hero-stat {
+            padding: 20px 40px;
+            text-align: center;
+            position: relative
+        }
+
+            .hero-stat:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                right: 0;
+                top: 20%;
+                bottom: 20%;
+                width: 1px;
+                background: var(--panel-border)
+            }
+
+            .hero-stat .num {
+                font-family: 'Orbitron',sans-serif;
+                font-size: 24px;
+                font-weight: 700;
+                color: var(--neon-cyan);
+                display: block;
+                text-shadow: 0 0 20px rgba(0,245,255,.5)
+            }
+
+            .hero-stat .lbl {
+                font-size: 11px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--text-dim);
+                margin-top: 4px;
+                display: block
+            }
+
+        /* LAYOUT */
+        section {
+            padding: 100px 40px;
+            position: relative;
+            z-index: 1
+        }
+
+        .container {
+            max-width: 1160px;
+            margin: 0 auto
+        }
+
+        .section-tag {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 10px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--neon-cyan);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+            .section-tag::before {
+                content: '';
+                width: 30px;
+                height: 1px;
+                background: var(--neon-cyan);
+                box-shadow: 0 0 6px var(--neon-cyan)
+            }
+
+        .section-title {
+            font-family: 'Orbitron',sans-serif;
+            font-size: clamp(24px,3vw,38px);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            line-height: 1.2
+        }
+
+            .section-title span {
+                color: var(--neon-cyan)
+            }
+
+        .section-desc {
+            font-size: 16px;
+            line-height: 1.85;
+            color: var(--text-sec);
+            max-width: 640px;
+            margin-bottom: 56px
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg,transparent,var(--panel-border),transparent);
+            position: relative;
+            z-index: 1
+        }
+
+        /* PANEL */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transition: border-color .3s,transform .3s
+        }
+
+            .panel::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg,rgba(0,245,255,.03) 0%,transparent 50%);
+                pointer-events: none
+            }
+
+            .panel:hover {
+                border-color: var(--panel-glow);
+                transform: translateY(-4px)
+            }
+
+                .panel:hover::after {
+                    content: '';
+                    position: absolute;
+                    inset: -1px;
+                    border-radius: 6px;
+                    background: transparent;
+                    box-shadow: 0 0 20px rgba(0,245,255,.12);
+                    pointer-events: none
+                }
+
+        .corner-tl, .corner-br {
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            border-color: var(--neon-cyan);
+            border-style: solid;
+            opacity: .5
+        }
+
+        .corner-tl {
+            top: 8px;
+            left: 8px;
+            border-width: 1px 0 0 1px
+        }
+
+        .corner-br {
+            bottom: 8px;
+            right: 8px;
+            border-width: 0 1px 1px 0
+        }
+
+        /* REVEAL */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity .7s ease,transform .7s ease
+        }
+
+            .reveal.visible {
+                opacity: 1;
+                transform: translateY(0)
+            }
+
+        /* ── ABOUT ── */
+        .mv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 48px
+        }
+
+        .mv-card {
+            padding: 36px
+        }
+
+        .mv-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 4px;
+            border: 1px solid var(--neon-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--neon-cyan);
+            background: rgba(0,245,255,.05);
+            box-shadow: 0 0 15px rgba(0,245,255,.1)
+        }
+
+        .mv-card h3 {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 14px
+        }
+
+        .mv-card p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-sec)
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        .overview-item {
+            display: flex;
+            gap: 16px;
+            padding: 20px 24px;
+            align-items: flex-start
+        }
+
+        .overview-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--neon-cyan);
+            box-shadow: 0 0 8px var(--neon-cyan);
+            margin-top: 8px;
+            flex-shrink: 0
+        }
+
+        .overview-item p {
+            font-size: 14px;
+            color: var(--text-sec);
+            line-height: 1.7
+        }
+
+            .overview-item p strong {
+                color: var(--text-primary)
+            }
+
+        /* ── SERVICES ── */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 20px
+        }
+
+        .service-card {
+            padding: 28px
+        }
+
+        .service-num {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            display: block
+        }
+
+        .service-icon {
+            font-size: 28px;
+            margin-bottom: 14px;
+            display: block;
+            filter: drop-shadow(0 0 8px rgba(0,245,255,.3))
+        }
+
+        .service-card h3 {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            letter-spacing: .5px;
+            line-height: 1.4
+        }
+
+        .service-card p {
+            font-size: 13px;
+            color: var(--text-sec);
+            line-height: 1.7
+        }
+
+        .service-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            padding: 4px 12px;
+            font-family: 'Orbitron',sans-serif;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--neon-cyan);
+            border: 1px solid rgba(0,245,255,.25);
+            border-radius: 2px;
+            background: rgba(0,245,255,.04)
+        }
+
+            .service-badge::before {
+                content: '';
+                width: 4px;
+                height: 4px;
+                background: var(--neon-cyan);
+                border-radius: 50%;
+                box-shadow: 0 0 6px var(--neon-cyan)
+            }
+
+        /* ── SAFETY SECTION ── */
+        .safety-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.4fr;
+            gap: 60px;
+            align-items: center
+        }
+
+        .safety-visual {
+            position: relative;
+            height: 340px
+        }
+
+        .safety-scene {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            width: 260px;
+            height: 260px
+        }
+
+        .safety-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 1px solid rgba(0,245,255,.2);
+            animation: ringPulse 3s ease-in-out infinite
+        }
+
+            .safety-ring:nth-child(2) {
+                inset: -40px;
+                animation-delay: .5s
+            }
+
+            .safety-ring:nth-child(3) {
+                inset: -80px;
+                animation-delay: 1s
+            }
+
+        @keyframes ringPulse {
+            0%,100% {
+                border-color: rgba(0,245,255,.15)
+            }
+
+            50% {
+                border-color: rgba(0,245,255,.5);
+                box-shadow: 0 0 20px rgba(0,245,255,.1) inset
+            }
+        }
+
+        .safety-center {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            filter: drop-shadow(0 0 20px rgba(0,245,255,.6));
+            animation: deviceFloat 3s ease-in-out infinite
+        }
+
+        .safety-labels {
+            position: absolute;
+            inset: 0
+        }
+
+        .safety-label-item {
+            position: absolute;
+            font-family: 'Orbitron',sans-serif;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--neon-cyan);
+            background: rgba(0,245,255,.05);
+            border: 1px solid rgba(0,245,255,.2);
+            padding: 4px 10px;
+            border-radius: 2px;
+            white-space: nowrap;
+            opacity: 0;
+            animation: labelAppear 4s ease infinite
+        }
+
+            .safety-label-item:nth-child(1) {
+                top: 18%;
+                left: 0;
+                animation-delay: 0s
+            }
+
+            .safety-label-item:nth-child(2) {
+                top: 38%;
+                right: 0;
+                animation-delay: 1s
+            }
+
+            .safety-label-item:nth-child(3) {
+                bottom: 22%;
+                left: 5%;
+                animation-delay: 2s
+            }
+
+            .safety-label-item:nth-child(4) {
+                top: 62%;
+                right: 5%;
+                animation-delay: 3s
+            }
+
+        @keyframes labelAppear {
+            0%,100% {
+                opacity: 0;
+                transform: translateX(-10px)
+            }
+
+            20%,80% {
+                opacity: 1;
+                transform: translateX(0)
+            }
+        }
+
+        .safety-content h3 {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--neon-orange);
+            text-transform: uppercase;
+            margin-bottom: 20px
+        }
+
+        .safety-points {
+            list-style: none
+        }
+
+            .safety-points li {
+                display: flex;
+                gap: 14px;
+                padding: 14px 0;
+                border-bottom: 1px solid rgba(0,245,255,.06);
+                font-size: 14px;
+                line-height: 1.7;
+                color: var(--text-sec)
+            }
+
+                .safety-points li::before {
+                    content: '▸';
+                    color: var(--neon-cyan);
+                    font-size: 12px;
+                    margin-top: 3px;
+                    flex-shrink: 0
+                }
+
+                .safety-points li strong {
+                    color: var(--text-primary)
+                }
+
+        /* ── INDUSTRIES ── */
+        .industries-grid {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 16px
+        }
+
+        .ind-card {
+            padding: 24px;
+            transition: border-color .3s,transform .3s
+        }
+
+        .ind-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 14px;
+            filter: drop-shadow(0 0 8px rgba(0,245,255,.3))
+        }
+
+        .ind-tag {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 8px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+            padding: 3px 10px;
+            border-radius: 2px;
+            border: 1px solid;
+            display: inline-block
+        }
+
+        .tag-cyan {
+            color: var(--neon-cyan);
+            border-color: rgba(0,245,255,.3);
+            background: rgba(0,245,255,.04)
+        }
+
+        .tag-orange {
+            color: var(--neon-orange);
+            border-color: rgba(255,107,0,.3);
+            background: rgba(255,107,0,.04)
+        }
+
+        .tag-green {
+            color: var(--neon-green);
+            border-color: rgba(0,255,136,.3);
+            background: rgba(0,255,136,.04)
+        }
+
+        .tag-purple {
+            color: var(--neon-purple);
+            border-color: rgba(180,0,255,.3);
+            background: rgba(180,0,255,.04)
+        }
+
+        .tag-yellow {
+            color: var(--neon-yellow);
+            border-color: rgba(255,230,0,.3);
+            background: rgba(255,230,0,.04)
+        }
+
+        .ind-card h4 {
+            font-family: 'Rajdhani',sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            margin-top: 10px
+        }
+
+        .ind-card p {
+            font-size: 13px;
+            color: var(--text-sec);
+            line-height: 1.65
+        }
+
+        .ind-card:hover {
+            border-color: var(--panel-glow);
+            transform: translateY(-5px)
+        }
+
+        /* ── IMPACT NUMBERS ── */
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 16px
+        }
+
+        .impact-card {
+            padding: 32px 24px;
+            text-align: center
+        }
+
+        .impact-num {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 40px;
+            font-weight: 900;
+            color: var(--neon-green);
+            display: block;
+            text-shadow: 0 0 24px rgba(0,255,136,.4);
+            margin-bottom: 10px
+        }
+
+        .impact-label {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 10px
+        }
+
+        .impact-desc {
+            font-size: 13px;
+            color: var(--text-sec);
+            line-height: 1.65
+        }
+
+        /* ── PROCESS ── */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(5,1fr);
+            gap: 0;
+            position: relative;
+            margin-top: 16px
+        }
+
+            .process-steps::before {
+                content: '';
+                position: absolute;
+                top: 32px;
+                left: 10%;
+                right: 10%;
+                height: 1px;
+                background: linear-gradient(90deg,var(--neon-cyan),var(--neon-purple),var(--neon-cyan));
+                z-index: 0;
+                opacity: .3
+            }
+
+        .process-step {
+            text-align: center;
+            padding: 0 12px;
+            position: relative;
+            z-index: 1
+        }
+
+        .step-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 1px solid var(--neon-cyan);
+            background: var(--deep-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+            box-shadow: 0 0 16px rgba(0,245,255,.15);
+            transition: all .3s
+        }
+
+        .process-step:hover .step-circle {
+            box-shadow: 0 0 32px rgba(0,245,255,.4);
+            border-color: var(--neon-cyan);
+            background: rgba(0,245,255,.06)
+        }
+
+        .step-num {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            display: block
+        }
+
+        .step-label {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: .5px;
+            line-height: 1.4
+        }
+
+        .step-desc {
+            font-size: 12px;
+            color: var(--text-sec);
+            line-height: 1.6;
+            margin-top: 6px
+        }
+
+        /* ── PROJECTS ── */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2,1fr);
+            gap: 24px
+        }
+
+        .project-card {
+            padding: 0;
+            overflow: hidden
+        }
+
+        .project-header-bar {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: rgba(0,245,255,.02)
+        }
+
+        .project-num {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 11px;
+            color: var(--neon-cyan);
+            letter-spacing: 2px
+        }
+
+        .project-title-text {
+            font-family: 'Rajdhani',sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary)
+        }
+
+        .project-body {
+            padding: 24px
+        }
+
+            .project-body p {
+                font-size: 14px;
+                color: var(--text-sec);
+                line-height: 1.7;
+                margin-bottom: 20px
+            }
+
+        .project-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap
+        }
+
+        .ptag {
+            padding: 4px 12px;
+            font-family: 'Orbitron',sans-serif;
+            font-size: 9px;
+            letter-spacing: 2px;
+            border: 1px solid rgba(0,255,136,.3);
+            color: var(--neon-green);
+            border-radius: 2px;
+            background: rgba(0,255,136,.04);
+            text-transform: uppercase
+        }
+
+        /* ── TRUST STRIP ── */
+        .trust-strip {
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 32px
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Orbitron',sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            text-transform: uppercase
+        }
+
+        .trust-icon {
+            font-size: 22px;
+            filter: drop-shadow(0 0 6px rgba(0,245,255,.3))
+        }
+
+        .trust-sep {
+            width: 1px;
+            height: 30px;
+            background: var(--panel-border)
+        }
+
+        /* ── CONTACT ── */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 40px
+        }
+
+        .contact-info-panel {
+            padding: 40px
+        }
+
+            .contact-info-panel h3 {
+                font-family: 'Orbitron',sans-serif;
+                font-size: 18px;
+                font-weight: 700;
+                margin-bottom: 10px;
+                color: var(--text-primary)
+            }
+
+        .contact-tagline {
+            font-size: 14px;
+            color: var(--text-sec);
+            line-height: 1.7;
+            margin-bottom: 32px
+        }
+
+        .contact-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            align-items: flex-start
+        }
+
+        .contact-icon {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+            background: rgba(0,245,255,.03)
+        }
+
+        .contact-label {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 9px;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+            text-transform: uppercase
+        }
+
+        .contact-val {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.5
+        }
+
+            .contact-val a {
+                color: var(--neon-cyan);
+                text-decoration: none;
+                transition: opacity .2s
+            }
+
+                .contact-val a:hover {
+                    opacity: .8
+                }
+
+        .contact-socials {
+            display: flex;
+            gap: 10px;
+            margin-top: 28px
+        }
+
+        .social-btn {
+            padding: 8px 16px;
+            border: 1px solid var(--panel-border);
+            border-radius: 3px;
+            font-family: 'Orbitron',sans-serif;
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            text-decoration: none;
+            transition: all .3s;
+            background: rgba(0,245,255,.02)
+        }
+
+            .social-btn:hover {
+                border-color: var(--neon-cyan);
+                color: var(--neon-cyan);
+                background: rgba(0,245,255,.06)
+            }
+
+        .contact-form-panel {
+            padding: 40px
+        }
+
+            .contact-form-panel h3 {
+                font-family: 'Orbitron',sans-serif;
+                font-size: 16px;
+                font-weight: 700;
+                margin-bottom: 28px;
+                color: var(--text-primary)
+            }
+
+        .form-row {
+            margin-bottom: 18px
+        }
+
+            .form-row label {
+                display: block;
+                font-family: 'Orbitron',sans-serif;
+                font-size: 9px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--text-dim);
+                margin-bottom: 8px
+            }
+
+            .form-row input, .form-row select, .form-row textarea {
+                width: 100%;
+                padding: 12px 16px;
+                background: rgba(0,245,255,.02);
+                border: 1px solid var(--panel-border);
+                border-radius: 3px;
+                font-family: 'Rajdhani',sans-serif;
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--text-primary);
+                transition: border-color .3s;
+                outline: none
+            }
+
+                .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+                    border-color: var(--neon-cyan);
+                    box-shadow: 0 0 10px rgba(0,245,255,.1)
+                }
+
+                .form-row select option {
+                    background: #0a1628
+                }
+
+            .form-row textarea {
+                height: 100px;
+                resize: none
+            }
+
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--neon-cyan);
+            color: #000;
+            font-family: 'Orbitron',sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border: none;
+            border-radius: 3px;
+            cursor: none;
+            transition: all .3s;
+            box-shadow: 0 0 20px rgba(0,245,255,.3);
+            margin-top: 8px
+        }
+
+            .submit-btn:hover {
+                box-shadow: 0 0 40px rgba(0,245,255,.6);
+                transform: translateY(-2px)
+            }
+
+        #form-success {
+            display: none;
+            margin-top: 14px;
+            padding: 12px 16px;
+            background: rgba(0,255,136,.06);
+            border: 1px solid rgba(0,255,136,.3);
+            border-radius: 3px;
+            font-family: 'Orbitron',sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            color: var(--neon-green);
+            text-align: center
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: rgba(0,0,0,.6);
+            border-top: 1px solid var(--panel-border);
+            padding: 64px 40px 32px;
+            position: relative;
+            z-index: 1
+        }
+
+        .footer-inner {
+            max-width: 1160px;
+            margin: 0 auto
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: 2.2fr 1fr 1fr 1fr;
+            gap: 48px;
+            margin-bottom: 48px
+        }
+
+        .footer-brand h2 {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 20px;
+            font-weight: 900;
+            background: linear-gradient(135deg,#fff,var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px
+        }
+
+        .footer-brand p {
+            font-size: 13px;
+            color: var(--text-dim);
+            line-height: 1.75;
+            margin-top: 10px;
+            max-width: 280px
+        }
+
+        .footer-contact-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 14px
+        }
+
+            .footer-contact-row a {
+                color: var(--neon-cyan);
+                text-decoration: none;
+                font-size: 12px
+            }
+
+        .footer-col h4 {
+            font-family: 'Orbitron',sans-serif;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--neon-cyan);
+            margin-bottom: 20px
+        }
+
+        .footer-col ul {
+            list-style: none
+        }
+
+            .footer-col ul li {
+                font-size: 13px;
+                color: var(--text-dim);
+                margin-bottom: 10px;
+                transition: color .2s;
+                cursor: default
+            }
+
+                .footer-col ul li:hover {
+                    color: var(--text-sec)
+                }
+
+        .footer-divider {
+            height: 1px;
+            background: var(--panel-border);
+            margin-bottom: 28px
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            flex-wrap: wrap;
+            gap: 10px
+        }
+
+            .footer-bottom span {
+                color: var(--neon-cyan)
+            }
+
+        /* RESPONSIVE */
+        @media(max-width:1080px) {
+            .industries-grid {
+                grid-template-columns: repeat(3,1fr)
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr 1fr
+            }
+        }
+
+        @media(max-width:900px) {
+            nav {
+                padding: 0 20px
+            }
+
+            .nav-links {
+                display: none
+            }
+
+            section {
+                padding: 60px 20px
+            }
+
+            .hero {
+                padding: 100px 20px 60px
+            }
+
+            .mv-grid, .safety-layout, .contact-grid, .overview-grid {
+                grid-template-columns: 1fr;
+                gap: 24px
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .industries-grid {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr 1fr;
+                gap: 24px
+            }
+
+                .process-steps::before {
+                    display: none
+                }
+
+            .impact-grid {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .hero-stats {
+                flex-wrap: wrap
+            }
+
+            .hero-stat {
+                padding: 14px 20px
+            }
+
+            .footer-top {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .form-grid-2 {
+                grid-template-columns: 1fr
+            }
+
+            footer {
+                padding: 40px 20px 24px
+            }
+        }
+
+        @media(max-width:600px) {
+            .services-grid, .industries-grid, .impact-grid {
+                grid-template-columns: 1fr
+            }
+
+            .hero h1 {
+                font-size: 28px
+            }
+        }
+    </style>
 </head>
 <body>
 
-    <!-- SCANLINE -->
     <div class="scanline"></div>
-
-    <!-- CUSTOM CURSOR -->
     <div class="cursor" id="cursor"></div>
     <div class="cursor-ring" id="cursorRing"></div>
-
-    <!-- PARTICLES -->
     <div class="particles" id="particles"></div>
 
-    <!-- NAV -->
-    <nav>
+    <!-- ══ NAV ══ -->
+    <nav id="mainNav">
         <a href="#" class="nav-logo">
             <div class="nav-logo-icon">XR</div>
             <div>
                 <div class="nav-logo-text">XR Builders</div>
-                <!--<div class="nav-logo-sub"></div>-->
+                <div class="nav-logo-sub">Immersive XR Solutions</div>
             </div>
         </a>
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
-            <li><a href="#xr">XR Solutions</a></li>
-            <li><a href="#impact">Impact</a></li>
+            <li><a href="#xr">Solutions</a></li>
+            <li><a href="#industries">Industries</a></li>
             <li><a href="#projects">Projects</a></li>
-            <li><a href="#team">Team</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
-        <a href="#contact" class="nav-cta">Contact Us</a>
+        <a href="#contact" class="nav-cta">Get in Touch</a>
     </nav>
 
-    <!-- HERO -->
-    <div class="hero">
+    <!-- ══ HERO ══ -->
+    <div class="hero" id="hero">
         <div class="hero-orb"></div>
         <div class="hero-orb-2"></div>
 
         <div class="hero-device">
             <svg viewBox="0 0 200 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <!-- VR headset outline -->
-                <rect x="20" y="25" width="160" height="60" rx="12" fill="none" stroke="#00f5ff" stroke-width="2" />
-                <rect x="20" y="25" width="160" height="60" rx="12" fill="rgba(0,245,255,0.04)" />
-                <!-- Left lens -->
+                <rect x="20" y="25" width="160" height="60" rx="12" fill="rgba(0,245,255,0.04)" stroke="#00f5ff" stroke-width="2" />
                 <ellipse cx="70" cy="55" rx="28" ry="22" fill="none" stroke="#00f5ff" stroke-width="1.5" />
                 <ellipse cx="70" cy="55" rx="18" ry="14" fill="rgba(0,245,255,0.08)" />
                 <ellipse cx="63" cy="49" rx="5" ry="4" fill="rgba(255,255,255,0.1)" />
-                <!-- Right lens -->
                 <ellipse cx="130" cy="55" rx="28" ry="22" fill="none" stroke="#00f5ff" stroke-width="1.5" />
                 <ellipse cx="130" cy="55" rx="18" ry="14" fill="rgba(0,245,255,0.08)" />
                 <ellipse cx="123" cy="49" rx="5" ry="4" fill="rgba(255,255,255,0.1)" />
-                <!-- Bridge -->
                 <line x1="98" y1="55" x2="102" y2="55" stroke="#00f5ff" stroke-width="1.5" />
-                <!-- Strap -->
                 <line x1="20" y1="45" x2="0" y2="55" stroke="#00f5ff" stroke-width="1.5" stroke-dasharray="4 2" />
                 <line x1="20" y1="65" x2="0" y2="55" stroke="#00f5ff" stroke-width="1.5" stroke-dasharray="4 2" />
                 <line x1="180" y1="45" x2="200" y2="55" stroke="#00f5ff" stroke-width="1.5" stroke-dasharray="4 2" />
                 <line x1="180" y1="65" x2="200" y2="55" stroke="#00f5ff" stroke-width="1.5" stroke-dasharray="4 2" />
-                <!-- Glow lines -->
                 <line x1="50" y1="85" x2="150" y2="85" stroke="rgba(0,245,255,0.3)" stroke-width="1" />
-                <line x1="60" y1="90" x2="140" y2="90" stroke="rgba(0,245,255,0.15)" stroke-width="1" />
-                <!-- Scan lines inside lenses -->
                 <line x1="55" y1="48" x2="85" y2="48" stroke="rgba(0,245,255,0.4)" stroke-width="0.5" />
                 <line x1="55" y1="53" x2="85" y2="53" stroke="rgba(0,245,255,0.4)" stroke-width="0.5" />
                 <line x1="55" y1="58" x2="85" y2="58" stroke="rgba(0,245,255,0.4)" stroke-width="0.5" />
@@ -1261,155 +1738,129 @@
             </svg>
         </div>
 
-        <div class="hero-badge">XR BUILDERS · Est. 2026</div>
+        <div class="hero-badge">XR Builders · Est. 2026 · Chennai</div>
+        <h1>XR BUILDERS</h1>
+        <div class="hero-sub">Immersive · Intelligent · Industrial XR</div>
 
-        <!--<h1>Centre for Teaching,<br />Learning & Virtual Skilling</h1>
-        <div class="hero-subtitle">CTLVS — Extended Reality Lab</div>-->
-
-        <p>Building immersive XR applications for education, training, and simulation. We design interactive VR/AR experiences that enhance learning outcomes, improve safety, and enable scalable training across industries — powered by cutting-edge technology and world-class pedagogy.</p>
+        <p class="hero-bio">
+            We design and build <span>enterprise-grade VR/AR/MR applications</span> for training, safety, simulation, and education — delivering measurable outcomes across <span>12+ industries</span> through cutting-edge Unity development and world-class instructional design.
+        </p>
 
         <div class="hero-actions">
-            <a href="#xr" class="btn-primary">Explore XR Solutions</a>
-            <a href="#contact" class="btn-secondary">Get in Touch</a>
+            <a href="#xr" class="btn-primary">Explore XR Solutions →</a>
+            <a href="#contact" class="btn-secondary">Request a Demo</a>
         </div>
 
         <div class="hero-stats">
-            <div class="hero-stat"><span class="num">4+</span><span class="lbl">Core Verticals</span></div>
-            <div class="hero-stat"><span class="num">VR/AR</span><span class="lbl">XR Platforms</span></div>
-            <!--<div class="hero-stat"><span class="num">NEP</span><span class="lbl">2020 Aligned</span></div>-->
-            <!--<div class="hero-stat"><span class="num">IIT</span><span class="lbl">Kharagpur</span></div>-->
-            <div class="hero-stat"><span class="num">10+</span><span class="lbl">Active Projects</span></div>
+            <div class="hero-stat"><span class="num">12+</span><span class="lbl">Industries Served</span></div>
+            <div class="hero-stat"><span class="num">VR/AR/MR</span><span class="lbl">XR Platforms</span></div>
+            <div class="hero-stat"><span class="num">20+</span><span class="lbl">Active Projects</span></div>
+            <div class="hero-stat"><span class="num">6</span><span class="lbl">XR Platforms</span></div>
+        </div>
+    </div>
+
+    <!-- TECH TICKER -->
+    <div class="ticker-wrap">
+        <div class="ticker-track">
+            <span class="ticker-item"><span>◆</span>Unity 6</span>
+            <span class="ticker-item"><span>◆</span>Meta Quest</span>
+            <span class="ticker-item"><span>◆</span>HoloLens 2</span>
+            <span class="ticker-item"><span>◆</span>WebGL / WebXR</span>
+            <span class="ticker-item"><span>◆</span>HTC Vive</span>
+            <span class="ticker-item"><span>◆</span>Shader Graph</span>
+            <span class="ticker-item"><span>◆</span>VFX Graph</span>
+            <span class="ticker-item"><span>◆</span>XR Toolkit</span>
+            <span class="ticker-item"><span>◆</span>Photon SDK</span>
+            <span class="ticker-item"><span>◆</span>Blender</span>
+            <span class="ticker-item"><span>◆</span>Rhino 3D</span>
+            <span class="ticker-item"><span>◆</span>Pixyz Studio</span>
+            <span class="ticker-item"><span>◆</span>ARCore / ARKit</span>
+            <span class="ticker-item"><span>◆</span>Digital Twins</span>
+            <span class="ticker-item"><span>◆</span>C# / .NET</span>
+            <!-- repeat for seamless loop -->
+            <span class="ticker-item"><span>◆</span>Unity 6</span>
+            <span class="ticker-item"><span>◆</span>Meta Quest</span>
+            <span class="ticker-item"><span>◆</span>HoloLens 2</span>
+            <span class="ticker-item"><span>◆</span>WebGL / WebXR</span>
+            <span class="ticker-item"><span>◆</span>HTC Vive</span>
+            <span class="ticker-item"><span>◆</span>Shader Graph</span>
+            <span class="ticker-item"><span>◆</span>VFX Graph</span>
+            <span class="ticker-item"><span>◆</span>XR Toolkit</span>
+            <span class="ticker-item"><span>◆</span>Photon SDK</span>
+            <span class="ticker-item"><span>◆</span>Blender</span>
+            <span class="ticker-item"><span>◆</span>Rhino 3D</span>
+            <span class="ticker-item"><span>◆</span>Pixyz Studio</span>
+            <span class="ticker-item"><span>◆</span>ARCore / ARKit</span>
+            <span class="ticker-item"><span>◆</span>Digital Twins</span>
+            <span class="ticker-item"><span>◆</span>C# / .NET</span>
         </div>
     </div>
 
     <div class="section-divider"></div>
 
-    <!-- MISSION & VISION -->
+    <!-- ══ ABOUT ══ -->
     <section id="about">
         <div class="container">
-            <div class="section-tag reveal">About the Centre</div>
+            <div class="section-tag reveal">Who We Are</div>
             <h2 class="section-title reveal">Mission &amp; <span>Vision</span></h2>
-            <p class="section-desc reveal">The centre is committed to transforming teaching and learning through immersive technology, modern pedagogy, and real-world application — aligned with India's NEP 2020 aspirations.</p>
-
+            <p class="section-desc reveal">XR Builders exists to make immersive technology accessible, impactful, and measurable — transforming how industries train their people, and how institutions educate the next generation.</p>
             <div class="mv-grid">
                 <div class="panel mv-card reveal">
                     <div class="corner-tl"></div><div class="corner-br"></div>
                     <div class="mv-icon">◎</div>
                     <h3>Vision</h3>
-                    <p>To equip teachers with the tools and techniques so that every teaching experience is optimized for learning in a collaborative environment — creating rich, engaged learning experiences for the 21st century through immersive Extended Reality technologies.</p>
+                    <p>To be the leading XR studio that equips every organization with immersive tools for training, upskilling, and simulation — creating rich, engaged experiences that are accessible, repeatable, and outcome-driven for the 21st century workforce.</p>
                 </div>
                 <div class="panel mv-card reveal">
                     <div class="corner-tl"></div><div class="corner-br"></div>
-                    <div class="mv-icon" style="border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.05);">✦</div>
+                    <div class="mv-icon" style="border-color:var(--neon-green);color:var(--neon-green);background:rgba(0,255,136,0.05)">✦</div>
                     <h3>Mission</h3>
-                    <p>Provide leadership, expertise and support for teaching and learning to advance and advocate for the practice of scholarship in higher education. We build XR-powered tools that democratize access to world-class, experiential, outcome-based education across industries and institutions.</p>
+                    <p>Build high-performance, enterprise-grade XR applications that deliver real results — measurable skill improvement, reduced training costs, and zero-risk exposure for high-stakes environments. We bridge the gap between technology and human potential through immersive design.</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- OVERVIEW -->
-    <section style="background: rgba(0,245,255,0.01);">
-        <div class="container">
-            <div class="section-tag reveal">Overview</div>
-            <h2 class="section-title reveal">Why <span>XR BUILDERS</span>?</h2>
-            <p class="section-desc reveal">Globalization, changing demographics and technological advancements are the key driving forces of the future. XR Builders acts as an enabling mechanism to prepare students, faculty, and industry professionals for 21st century challenges using immersive XR technologies.</p>
             <div class="overview-grid">
-                <div class="panel overview-item reveal"><div class="overview-dot"></div><p><strong>Capacity building</strong> for teachers of higher education and school education for the implementation of NEP 2020 in the classroom through XR-enhanced pedagogy.</p></div>
-                <div class="panel overview-item reveal"><div class="overview-dot"></div><p><strong>Virtual skilling</strong> for structured, technology-enabled skill development across multiple domains and industries using immersive simulations.</p></div>
-                <div class="panel overview-item reveal"><div class="overview-dot"></div><p><strong>Augmented/Virtual Reality</strong> content development for education and industrial training using state-of-the-art XR tools — from Unity 6 to WebXR.</p></div>
-                <div class="panel overview-item reveal"><div class="overview-dot"></div><p><strong>Institutional quality assurance</strong> — capacity building for Institute/University accreditation processes and quality frameworks aligned with global standards.</p></div>
+                <div class="panel overview-item reveal"><div class="overview-dot"></div><p><strong>VR/AR/MR development</strong> for industrial training, safety simulation, digital twins, and workforce upskilling across sectors.</p></div>
+                <div class="panel overview-item reveal"><div class="overview-dot"></div><p><strong>WebGL &amp; WebXR</strong> content for browser-based training, eLearning platforms, and LMS-integrated interactive modules.</p></div>
+                <div class="panel overview-item reveal"><div class="overview-dot"></div><p><strong>Performance analytics</strong> integration — every session tracked, scored, and reported for data-driven training management.</p></div>
+                <div class="panel overview-item reveal"><div class="overview-dot"></div><p><strong>Cross-platform deployment</strong> to Meta Quest, HoloLens, HTC Vive, WebGL, Android and Windows from a single Unity codebase.</p></div>
             </div>
         </div>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- SERVICES (TECH DETAIL) -->
-    <section id="xr">
+    <!-- ══ XR SOLUTIONS ══ -->
+    <section id="xr" style="background:rgba(0,245,255,0.01)">
         <div class="container">
             <div class="section-tag reveal">Technical Capabilities</div>
             <h2 class="section-title reveal">What We <span>Build</span></h2>
-            <p class="section-desc reveal">Our multidisciplinary team combines Unity development, 3D art, instructional design, and research to deliver complete XR solutions across platforms.</p>
-
+            <p class="section-desc reveal">A complete XR studio — Unity development, 3D art pipeline, instructional design, and real-time analytics — all under one roof.</p>
             <div class="services-grid">
-                <div class="panel service-card reveal">
-                    <div class="corner-tl"></div>
-                    <span class="service-num">01</span>
-                    <span class="service-icon">🥽</span>
-                    <h3>VR/AR/MR Training Simulations</h3>
-                    <p>Advanced XR training with real-time VO feedback, performance scoring, and scenario-based assessment for safety, medical, and industrial domains.</p>
-                    <span class="service-badge">High Impact</span>
-                </div>
-                <div class="panel service-card reveal">
-                    <div class="corner-tl"></div>
-                    <span class="service-num">02</span>
-                    <span class="service-icon">🏛️</span>
-                    <h3>Architectural & Engineering Viz</h3>
-                    <p>Interactive 3D walkthroughs, real-time physically-based lighting, and immersive structural visualization for engineering education and client communication.</p>
-                    <span class="service-badge">3D Design</span>
-                </div>
-                <div class="panel service-card reveal">
-                    <div class="corner-tl"></div>
-                    <span class="service-num">03</span>
-                    <span class="service-icon">🤖</span>
-                    <h3>Digital Twins & IoT Integration</h3>
-                    <p>Live digital replicas of physical industrial systems, integrating real sensor data for process monitoring, predictive maintenance, and operator training.</p>
-                    <span class="service-badge">Industry 4.0</span>
-                </div>
-                <div class="panel service-card reveal">
-                    <div class="corner-tl"></div>
-                    <span class="service-num">04</span>
-                    <span class="service-icon">🌐</span>
-                    <h3>WebGL / WebXR eLearning</h3>
-                    <p>Browser-based Unity content and interactive e-learning modules for DIKSHA, Moodle, and LMS platforms — zero install, maximum reach across India.</p>
-                    <span class="service-badge">Web Ready</span>
-                </div>
-                <div class="panel service-card reveal">
-                    <div class="corner-tl"></div>
-                    <span class="service-num">05</span>
-                    <span class="service-icon">📱</span>
-                    <h3>Mobile AR Applications</h3>
-                    <p>ARCore/ARKit powered applications that overlay instructional content onto real-world objects — enabling on-the-job assistance without headsets.</p>
-                    <span class="service-badge">Cross-Platform</span>
-                </div>
-                <div class="panel service-card reveal">
-                    <div class="corner-tl"></div>
-                    <span class="service-num">06</span>
-                    <span class="service-icon">🤝</span>
-                    <h3>Multiplayer XR Simulations</h3>
-                    <p>Networked collaborative XR spaces enabling multiple learners to interact, train, and complete tasks together in shared virtual environments in real time — powered by Photon SDK and Unity Netcode.</p>
-                    <span class="service-badge">Collaborative</span>
-                </div>
-                <div class="panel service-card reveal">
-                    <div class="corner-tl"></div>
-                    <span class="service-num">07</span>
-                    <span class="service-icon">⚡</span>
-                    <h3>Performance-Optimized XR</h3>
-                    <p>VR-grade optimization for standalone headsets and mobile AR — including draw call reduction, occlusion culling, LOD management, and foveated rendering for smooth 90fps experiences.</p>
-                    <span class="service-badge">VR-Grade</span>
-                </div>
+                <div class="panel service-card reveal"><div class="corner-tl"></div><span class="service-num">01</span><span class="service-icon">🥽</span><h3>VR / AR / MR Training Simulations</h3><p>Immersive training with real-time VO feedback, performance scoring, and scenario-based assessment for safety, medical, and industrial domains.</p><span class="service-badge">High Impact</span></div>
+                <div class="panel service-card reveal"><div class="corner-tl"></div><span class="service-num">02</span><span class="service-icon">🏛️</span><h3>Architectural &amp; Engineering Visualization</h3><p>Interactive 3D walkthroughs, physically-based lighting, and immersive structural visualization for design review and client communication.</p><span class="service-badge">3D Design</span></div>
+                <div class="panel service-card reveal"><div class="corner-tl"></div><span class="service-num">03</span><span class="service-icon">🤖</span><h3>Digital Twins &amp; IoT Integration</h3><p>Live digital replicas of physical industrial systems integrating real sensor data for process monitoring, predictive maintenance, and operator training.</p><span class="service-badge">Industry 4.0</span></div>
+                <div class="panel service-card reveal"><div class="corner-tl"></div><span class="service-num">04</span><span class="service-icon">🌐</span><h3>WebGL / WebXR eLearning</h3><p>Browser-based Unity content and interactive learning modules for DIKSHA, Moodle, and LMS platforms — zero install, maximum reach.</p><span class="service-badge">Web Ready</span></div>
+                <div class="panel service-card reveal"><div class="corner-tl"></div><span class="service-num">05</span><span class="service-icon">📱</span><h3>Mobile AR Applications</h3><p>ARCore/ARKit apps overlaying instructional content onto real-world objects — enabling on-the-job guidance without headsets.</p><span class="service-badge">Cross-Platform</span></div>
+                <div class="panel service-card reveal"><div class="corner-tl"></div><span class="service-num">06</span><span class="service-icon">🤝</span><h3>Multiplayer XR Simulations</h3><p>Networked collaborative XR environments enabling multiple learners to train together in shared virtual spaces — powered by Photon &amp; Unity Netcode.</p><span class="service-badge">Collaborative</span></div>
+                <div class="panel service-card reveal"><div class="corner-tl"></div><span class="service-num">07</span><span class="service-icon">📊</span><h3>Analytics &amp; Report Generation</h3><p>Session-level performance dashboards, per-metric scoring, and auto-generated certificates — giving instructors actionable data, not just scores.</p><span class="service-badge">Data-Driven</span></div>
+                <div class="panel service-card reveal"><div class="corner-tl"></div><span class="service-num">08</span><span class="service-icon">⚡</span><h3>Performance-Optimized XR</h3><p>VR-grade rendering optimisation for standalone headsets — draw call reduction, LOD management, GPU warmup, and foveated rendering for smooth 90fps.</p><span class="service-badge">VR-Grade</span></div>
+                <div class="panel service-card reveal"><div class="corner-tl"></div><span class="service-num">09</span><span class="service-icon">🔧</span><h3>Custom XR Tooling &amp; Plugins</h3><p>Bespoke Unity Editor tools, custom shaders, physics rigs, and interaction systems tailored to the exact requirements of your training workflow.</p><span class="service-badge">Bespoke</span></div>
             </div>
         </div>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- SAFETY & INDUSTRIAL TRAINING -->
-    <section id="impact">
+    <!-- ══ SAFETY XR ══ -->
+    <section id="safety" style="background:rgba(0,245,255,0.01);border-top:1px solid rgba(0,245,255,0.06)">
         <div class="container">
-            <div class="section-tag reveal">Safety & Industry</div>
+            <div class="section-tag reveal">Core Strength</div>
             <h2 class="section-title reveal">XR for <span>Safety Training</span></h2>
-            <p class="section-desc reveal">Virtual Reality creates risk-free environments for high-stakes safety training — reducing workplace accidents, cutting training costs, and dramatically improving knowledge retention compared to traditional methods.</p>
-
+            <p class="section-desc reveal">Virtual Reality creates risk-free environments for high-stakes safety training — reducing workplace accidents, cutting costs, and dramatically improving knowledge retention.</p>
             <div class="safety-layout">
                 <div class="safety-visual reveal">
                     <div class="safety-scene">
-                        <div class="safety-ring"></div>
-                        <div class="safety-ring"></div>
-                        <div class="safety-ring"></div>
+                        <div class="safety-ring"></div><div class="safety-ring"></div><div class="safety-ring"></div>
                         <div class="safety-center">🥽</div>
                     </div>
                     <div class="safety-labels">
@@ -1419,15 +1870,14 @@
                         <div class="safety-label-item">IMMERSION: 100%</div>
                     </div>
                 </div>
-
                 <div class="safety-content reveal">
                     <h3>Why XR Safety Training Works</h3>
                     <ul class="safety-points">
-                        <li><p><strong>Zero Risk, Full Exposure:</strong> Trainees can experience catastrophic failure scenarios — chemical spills, equipment malfunctions, fire emergencies — without any real-world danger.</p></li>
-                        <li><p><strong>Repeat on Demand:</strong> Unlike physical drills, XR scenarios can be run unlimited times, allowing trainees to practice until mastery is achieved.</p></li>
-                        <li><p><strong>Real-time Performance Analytics:</strong> Every movement, decision, and response is captured — enabling data-driven assessment and targeted improvement.</p></li>
-                        <li><p><strong>75% Better Retention:</strong> Studies show VR-trained workers retain knowledge 75% longer than those trained with traditional methods.</p></li>
-                        <li><p><strong>Scalable Across Sites:</strong> Deploy the same certified training simulation to workers across multiple plant locations simultaneously.</p></li>
+                        <li><p><strong>Zero Risk, Full Exposure —</strong> Trainees experience catastrophic failure scenarios — chemical spills, equipment malfunctions, fire emergencies — with zero real-world danger.</p></li>
+                        <li><p><strong>Repeat on Demand —</strong> Unlike physical drills, XR scenarios run unlimited times, allowing trainees to practice until mastery is achieved.</p></li>
+                        <li><p><strong>Real-Time Performance Analytics —</strong> Every movement, decision, and response is captured — enabling data-driven assessment and targeted improvement.</p></li>
+                        <li><p><strong>75% Better Retention —</strong> VR-trained workers retain knowledge 75% longer than those trained with traditional methods.</p></li>
+                        <li><p><strong>Scalable Across Sites —</strong> Deploy the same certified training simulation to workers across multiple locations simultaneously.</p></li>
                     </ul>
                 </div>
             </div>
@@ -1436,88 +1886,169 @@
 
     <div class="section-divider"></div>
 
-    <!-- INDUSTRY USE CASES -->
-    <section style="background: rgba(0,0,0,0.2);">
+    <!-- ══ INDUSTRIES ══ -->
+    <section id="industries" style="background:rgba(0,0,0,0.2)">
         <div class="container">
             <div class="section-tag reveal">Industry Applications</div>
             <h2 class="section-title reveal">XR Across <span>Industries</span></h2>
-            <p class="section-desc reveal">Extended Reality is transforming how industries train their workforce, conduct maintenance, collaborate on design, and educate the next generation of professionals.</p>
+            <p class="section-desc reveal">Extended Reality is transforming how industries train their workforce, conduct maintenance, collaborate on design, and simulate complex operations — across every major sector.</p>
+            <div class="industries-grid">
 
-            <div class="use-cases-scroll">
-                <div class="panel use-case-card reveal">
-                    <span class="use-case-icon">🏭</span>
-                    <span class="use-case-industry">Manufacturing</span>
-                    <h4>Assembly & Maintenance Training</h4>
-                    <p>Step-by-step AR guidance overlaid on real machinery for complex assembly tasks. Reduce onboarding time by up to 60% and minimize costly errors on the production floor.</p>
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">🏭</span>
+                    <span class="ind-tag tag-cyan">Manufacturing</span>
+                    <h4>Assembly &amp; Maintenance</h4>
+                    <p>AR-guided step-by-step assembly, machine operator training, and preventive maintenance simulations — reducing onboarding time by 60%.</p>
                 </div>
-                <div class="panel use-case-card reveal">
-                    <span class="use-case-icon">⚗️</span>
-                    <span class="use-case-industry">Chemical & Process Industry</span>
-                    <h4>Hazardous Environment Simulation</h4>
-                    <p>Train workers for chemical plant operations, emergency shutdowns, and spill response in fully simulated hazardous environments — safely and repeatedly.</p>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">⚗️</span>
+                    <span class="ind-tag tag-orange">Chemical &amp; Process</span>
+                    <h4>Hazardous Environment Sim</h4>
+                    <p>Train workers on chemical plant operations, emergency shutdowns, and spill response in fully simulated hazardous environments — safely and repeatedly.</p>
                 </div>
-                <div class="panel use-case-card reveal">
-                    <span class="use-case-icon">🏗️</span>
-                    <span class="use-case-industry">Construction</span>
-                    <h4>Site Safety & BIM Visualization</h4>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">🏗️</span>
+                    <span class="ind-tag tag-green">Construction</span>
+                    <h4>Site Safety &amp; BIM Viz</h4>
                     <p>Walk through Building Information Models in VR, identify safety hazards before ground is broken, and train workers on height, electrical, and equipment safety.</p>
                 </div>
-                <div class="panel use-case-card reveal">
-                    <span class="use-case-icon">🎓</span>
-                    <span class="use-case-industry">Higher Education</span>
-                    <h4>Virtual Laboratories & Fieldwork</h4>
-                    <p>Conduct chemistry experiments, geological surveys, and biological dissections virtually — giving students experiential learning regardless of physical resource constraints.</p>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">🏥</span>
+                    <span class="ind-tag tag-cyan">Healthcare</span>
+                    <h4>Clinical Skills &amp; Surgical Sim</h4>
+                    <p>CPR training, surgical procedure rehearsal, patient handling, and emergency response simulation for medical students and clinical staff.</p>
                 </div>
-                <div class="panel use-case-card reveal">
-                    <span class="use-case-icon">🚒</span>
-                    <span class="use-case-industry">Emergency Services</span>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">✈️</span>
+                    <span class="ind-tag tag-purple">Defence &amp; Aviation</span>
+                    <h4>Maintenance &amp; Mission Sim</h4>
+                    <p>Aircraft component identification, maintenance procedures, and multiplayer mission rehearsal for defence and aviation professionals.</p>
+                </div>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">⚡</span>
+                    <span class="ind-tag tag-yellow">Energy &amp; Utilities</span>
+                    <h4>Power Plant &amp; Grid Training</h4>
+                    <p>Train engineers on switchgear operations, transformer maintenance, and grid fault diagnosis through immersive XR simulations.</p>
+                </div>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">🛢️</span>
+                    <span class="ind-tag tag-orange">Oil &amp; Gas</span>
+                    <h4>Rig Operations &amp; Safety</h4>
+                    <p>Offshore rig safety drills, blowout prevention training, pipeline inspection simulations, and confined space entry procedures — zero risk.</p>
+                </div>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">🚢</span>
+                    <span class="ind-tag tag-cyan">Shipbuilding &amp; Marine</span>
+                    <h4>Ship Design &amp; Safety Training</h4>
+                    <p>VR walkthroughs of hull designs, AR-guided welding and pipe-fitting, confined space entry drills, and damage control simulations for shipyard crews.</p>
+                </div>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">🚒</span>
+                    <span class="ind-tag tag-orange">Emergency Services</span>
                     <h4>First Responder Preparedness</h4>
-                    <p>Firefighter, paramedic, and disaster response training in hyper-realistic simulated environments. Build muscle memory for life-or-death decisions before they happen.</p>
+                    <p>Firefighter, paramedic, and disaster response training in hyper-realistic simulated environments — building muscle memory for life-or-death decisions.</p>
                 </div>
-                <div class="panel use-case-card reveal">
-                    <span class="use-case-icon">⚡</span>
-                    <span class="use-case-industry">Energy & Utilities</span>
-                    <h4>Power Plant & Grid Training</h4>
-                    <p>Train electrical engineers and technicians on switchgear operations, transformer maintenance, and grid fault diagnosis through immersive XR simulations.</p>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">🚗</span>
+                    <span class="ind-tag tag-green">Automotive</span>
+                    <h4>Design Review &amp; Assembly</h4>
+                    <p>Virtual vehicle design reviews, AR-assisted production line assembly, quality inspection training, and EV battery handling simulations.</p>
                 </div>
-                <div class="panel use-case-card reveal full-width">
-                    <span class="use-case-icon">🚢</span>
-                    <span class="use-case-industry">Shipbuilding & Marine</span>
-                    <h4>Ship Design, Safety & Workforce Training</h4>
-                    <p>The shipbuilding industry demands extreme precision, coordination, and a relentless focus on safety. XR transforms how shipyards train and upskill their workforce — from virtual walkthroughs of complex hull designs and engine room layouts, to AR-guided welding and pipe-fitting procedures. Workers can rehearse confined space entry, fire and flood emergency drills, and crane operations in fully simulated environments with zero risk of real-world harm. Digital twins of vessels enable engineers to identify structural issues during design, long before steel is cut — reducing costly rework. Multiplayer XR training allows distributed teams across shipyard facilities to collaborate on safety protocols, damage control scenarios, and launch procedures simultaneously, ensuring every crew member is prepared for the critical demands of maritime operations.</p>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">⛏️</span>
+                    <span class="ind-tag tag-yellow">Mining</span>
+                    <h4>Underground &amp; Surface Safety</h4>
+                    <p>Mine entry protocols, equipment operation training, emergency evacuation drills, and explosion risk identification in fully immersive underground environments.</p>
                 </div>
+
+                <div class="panel ind-card reveal">
+                    <div class="corner-tl"></div>
+                    <span class="ind-icon">🎓</span>
+                    <span class="ind-tag tag-purple">Higher Education</span>
+                    <h4>Virtual Labs &amp; Fieldwork</h4>
+                    <p>Chemistry experiments, geological surveys, and biological dissections virtually — giving students experiential learning regardless of physical resource constraints.</p>
+                </div>
+
             </div>
         </div>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- IMPACT NUMBERS -->
-    <section style="background: linear-gradient(180deg, rgba(0,255,136,0.03) 0%, transparent 100%);">
+    <!-- ══ WHY XR WORKS ══ -->
+    <section style="background:linear-gradient(180deg,rgba(0,255,136,0.03) 0%,transparent 100%)">
         <div class="container">
-            <div class="section-tag reveal">Impact</div>
+            <div class="section-tag reveal">Proven Results</div>
             <h2 class="section-title reveal">Why Immersive Learning <span>Works</span></h2>
             <p class="section-desc reveal">Research consistently shows that XR-based training outperforms conventional methods across every key metric — retention, confidence, speed, and cost-effectiveness.</p>
-            <div class="industry-grid">
-                <div class="panel industry-card reveal">
-                    <span class="industry-num">75%</span>
-                    <span class="industry-label">Faster Learning</span>
-                    <p class="industry-desc">VR learners train up to 4x faster than in traditional classroom settings.</p>
+            <div class="impact-grid">
+                <div class="panel impact-card reveal"><div class="corner-tl"></div><span class="impact-num">75%</span><span class="impact-label">Faster Learning</span><p class="impact-desc">VR learners train up to 4× faster than in traditional classroom or lecture-based settings.</p></div>
+                <div class="panel impact-card reveal"><div class="corner-tl"></div><span class="impact-num">80%</span><span class="impact-label">Retention Rate</span><p class="impact-desc">Immersive XR experiences drive significantly higher long-term knowledge retention vs. e-learning.</p></div>
+                <div class="panel impact-card reveal"><div class="corner-tl"></div><span class="impact-num">40%</span><span class="impact-label">Cost Reduction</span><p class="impact-desc">XR training reduces costs associated with physical props, travel, materials, and instructor time.</p></div>
+                <div class="panel impact-card reveal"><div class="corner-tl"></div><span class="impact-num">275%</span><span class="impact-label">Confidence Boost</span><p class="impact-desc">VR-trained workers report significantly greater confidence applying skills on the job from day one.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ══ HOW WE WORK ══ -->
+    <section style="background:rgba(180,0,255,0.02);border-top:1px solid rgba(180,0,255,0.07);border-bottom:1px solid rgba(180,0,255,0.07)">
+        <div class="container">
+            <div class="section-tag reveal">Our Process</div>
+            <h2 class="section-title reveal">How We <span>Work</span></h2>
+            <p class="section-desc reveal">A structured five-stage process from discovery to deployment — ensuring every XR solution we deliver is technically robust, pedagogically sound, and production-ready.</p>
+            <div class="process-steps">
+                <div class="process-step reveal">
+                    <div class="step-circle">🔍</div>
+                    <span class="step-num">STAGE 01</span>
+                    <div class="step-label">Discovery &amp; Scoping</div>
+                    <div class="step-desc">Workshop with your team to define training objectives, platform constraints, and success metrics.</div>
                 </div>
-                <div class="panel industry-card reveal">
-                    <span class="industry-num">80%</span>
-                    <span class="industry-label">Retention Rate</span>
-                    <p class="industry-desc">Immersive XR experiences drive significantly higher long-term knowledge retention.</p>
+                <div class="process-step reveal">
+                    <div class="step-circle">📐</div>
+                    <span class="step-num">STAGE 02</span>
+                    <div class="step-label">Design &amp; Storyboard</div>
+                    <div class="step-desc">Instructional design, interaction flow mapping, UI wireframes, and 3D environment planning.</div>
                 </div>
-                <div class="panel industry-card reveal">
-                    <span class="industry-num">40%</span>
-                    <span class="industry-label">Cost Reduction</span>
-                    <p class="industry-desc">XR training reduces costs associated with physical props, travel, and instructor time.</p>
+                <div class="process-step reveal">
+                    <div class="step-circle">🛠️</div>
+                    <span class="step-num">STAGE 03</span>
+                    <div class="step-label">Build &amp; Iterate</div>
+                    <div class="step-desc">Unity development with bi-weekly client reviews, prototype testing, and feedback integration.</div>
                 </div>
-                <div class="panel industry-card reveal">
-                    <span class="industry-num">275%</span>
-                    <span class="industry-label">Confidence Boost</span>
-                    <p class="industry-desc">VR-trained workers are significantly more confident applying skills on the job.</p>
+                <div class="process-step reveal">
+                    <div class="step-circle">🧪</div>
+                    <span class="step-num">STAGE 04</span>
+                    <div class="step-label">QA &amp; Validation</div>
+                    <div class="step-desc">Device testing across target platforms, performance profiling, and pedagogic effectiveness review.</div>
+                </div>
+                <div class="process-step reveal">
+                    <div class="step-circle">🚀</div>
+                    <span class="step-num">STAGE 05</span>
+                    <div class="step-label">Deploy &amp; Support</div>
+                    <div class="step-desc">Delivery to headsets or web, staff onboarding, and ongoing maintenance &amp; update support.</div>
                 </div>
             </div>
         </div>
@@ -1525,188 +2056,163 @@
 
     <div class="section-divider"></div>
 
+    <!-- ══ TRUST STRIP ══ -->
+    <div class="panel trust-strip" style="border-radius:0;border-left:none;border-right:none;position:relative;z-index:1">
+        <div class="trust-item"><span class="trust-icon">🥽</span>Meta Quest Certified</div>
+        <div class="trust-sep"></div>
+        <div class="trust-item"><span class="trust-icon">🏛️</span>CTLVS — IIT Kharagpur</div>
+        <div class="trust-sep"></div>
+        <div class="trust-item"><span class="trust-icon">⚓</span>Indian Navy</div>
+        <div class="trust-sep"></div>
+        <div class="trust-item"><span class="trust-icon">⚡</span>NTPC &amp; L&amp;T</div>
+        <div class="trust-sep"></div>
+        <div class="trust-item"><span class="trust-icon">✈️</span>IDEX Defence UAE</div>
+        <div class="trust-sep"></div>
+        <div class="trust-item"><span class="trust-icon">📚</span>PSSCIVE / DIKSHA</div>
+    </div>
 
+    <div class="section-divider"></div>
 
-    <!-- FEATURED PROJECTS -->
-    <section style="background: rgba(0,0,0,0.3);" id="projects">
+    <!-- ══ PROJECTS ══ -->
+    <section id="projects" style="background:rgba(0,0,0,0.3)">
         <div class="container">
             <div class="section-tag reveal">Featured Work</div>
             <h2 class="section-title reveal">Recent <span>Projects</span></h2>
-            <p class="section-desc reveal">A selection of impactful XR solutions developed at XR Builders for education, skilling, and industrial training across government and academic institutions.</p>
+            <p class="section-desc reveal">A selection of impactful XR solutions delivered by XR Builders across defence, energy, maritime, healthcare, and education sectors.</p>
             <div class="projects-grid">
+
                 <div class="panel project-card reveal">
                     <div class="corner-tl"></div>
-                    <div class="project-header-bar">
-                        <span class="project-num">PROJECT 01</span>
-                        <span class="project-title-text">Immersive VR Training Simulation</span>
-                    </div>
+                    <div class="project-header-bar"><span class="project-num">PROJECT 01</span><span class="project-title-text">VR Welding Simulator — Meta Quest</span></div>
                     <div class="project-body">
-                        <p>A fully immersive VR training simulation with real-time voice-over feedback, multiplayer support, and networked collaboration for skill-based assessment. Built on Unity 6 with Meta Quest deployment.</p>
-                        <div class="project-tags">
-                            <span class="ptag">Unity 6</span><span class="ptag">Meta Quest</span><span class="ptag">Multiplayer</span><span class="ptag">xAPI</span>
-                        </div>
+                        <p>A fully immersive VR welding training simulator with PPE training, hazard identification, machine setup, real-time analytics, auto report generation, and certification — deployed on Meta Quest (available free on Meta Horizon Store).</p>
+                        <div class="project-tags"><span class="ptag">Unity 6</span><span class="ptag">Meta Quest</span><span class="ptag">Analytics</span><span class="ptag">Certification</span></div>
                     </div>
                 </div>
+
                 <div class="panel project-card reveal">
                     <div class="corner-tl"></div>
-                    <div class="project-header-bar">
-                        <span class="project-num">PROJECT 02</span>
-                        <span class="project-title-text">PSSCIVE WebGL eLearning Modules</span>
-                    </div>
+                    <div class="project-header-bar"><span class="project-num">PROJECT 02</span><span class="project-title-text">IDEX — Mirage 2000 Defence Training</span></div>
                     <div class="project-body">
-                        <p>Browser-based interactive e-learning content developed for PSSCIVE, deployed on India's national DIKSHA platform for vocational and school education — reaching millions of learners.</p>
-                        <div class="project-tags">
-                            <span class="ptag">WebGL</span><span class="ptag">PSSCIVE</span><span class="ptag">DIKSHA</span><span class="ptag">NEP 2020</span>
-                        </div>
+                        <p>Aircraft component identification and maintenance training for the Mirage 2000 using Hurricane VR physics, multiplayer collaboration via Netcode for GameObjects — deployed at IDEX UAE.</p>
+                        <div class="project-tags"><span class="ptag">Defence</span><span class="ptag">Hurricane VR</span><span class="ptag">Multiplayer</span><span class="ptag">Netcode</span></div>
                     </div>
                 </div>
+
                 <div class="panel project-card reveal">
                     <div class="corner-tl"></div>
-                    <div class="project-header-bar">
-                        <span class="project-num">PROJECT 03</span>
-                        <span class="project-title-text">Industrial Safety XR Training</span>
-                    </div>
+                    <div class="project-header-bar"><span class="project-num">PROJECT 03</span><span class="project-title-text">Industrial Safety XR — NTPC &amp; L&amp;T</span></div>
                     <div class="project-body">
-                        <p>Immersive safety protocol training with real-time hazard identification, performance scoring, and scenario-based risk assessment for chemical and manufacturing environments.</p>
-                        <div class="project-tags">
-                            <span class="ptag">VR/AR</span><span class="ptag">Safety</span><span class="ptag">Assessment</span><span class="ptag">Industry</span>
-                        </div>
+                        <p>Immersive safety protocol training for large industrial facilities — real-time hazard identification, psychometric assessment systems, performance scoring, and electrical training simulations.</p>
+                        <div class="project-tags"><span class="ptag">VR/AR</span><span class="ptag">Safety</span><span class="ptag">Assessment</span><span class="ptag">Analytics</span></div>
                     </div>
                 </div>
+
                 <div class="panel project-card reveal">
                     <div class="corner-tl"></div>
-                    <div class="project-header-bar">
-                        <span class="project-num">PROJECT 04</span>
-                        <span class="project-title-text">NEP 2020 Faculty Development</span>
-                    </div>
+                    <div class="project-header-bar"><span class="project-num">PROJECT 04</span><span class="project-title-text">Indian Navy — Maritime XR Training</span></div>
                     <div class="project-body">
-                        <p>Structured capacity-building programs for higher education teachers, XR-enhanced outcome-based learning workshops, and digital pedagogy certification aligned with NEP 2020.</p>
-                        <div class="project-tags">
-                            <span class="ptag">NEP 2020</span><span class="ptag">Faculty Dev</span><span class="ptag">Pedagogy</span><span class="ptag">OBE</span>
-                        </div>
+                        <p>Confined space entry simulators, ship visualization and walkthrough applications, and immersive vessel exploration for the Indian Navy and Cochin Shipyard Ltd.</p>
+                        <div class="project-tags"><span class="ptag">Maritime</span><span class="ptag">Confined Space</span><span class="ptag">Ship Viz</span><span class="ptag">HoloLens 2</span></div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
     <div class="section-divider"></div>
 
-    <!-- TEAM -->
-    <section id="team">
-        <div class="container">
-            <div class="section-tag reveal">People</div>
-            <h2 class="section-title reveal">Our <span>Team</span></h2>
-            <p class="section-desc reveal">A multidisciplinary team of researchers, XR developers, and educators working at the intersection of immersive technology and pedagogy to build the future of learning.</p>
-            <div class="team-grid">
-                <div class="panel team-card reveal">
-                    <div class="avatar-wrap">
-                        <div class="avatar">PI</div>
-                    </div>
-                    <h3>Principal Investigator</h3>
-                    <div class="role">Centre Director</div>
-                    <span class="team-dept">XR Builders</span>
-                </div>
-                <div class="panel team-card reveal">
-                    <div class="avatar-wrap">
-                        <div class="avatar" style="color:var(--neon-green)">XR</div>
-                    </div>
-                    <h3>XR Development</h3>
-                    <div class="role">XR Engineer</div>
-                    <span class="team-dept">XR Builders</span>
-                </div>
-                <div class="panel team-card reveal">
-                    <div class="avatar-wrap">
-                        <div class="avatar" style="color:var(--neon-purple)">PE</div>
-                    </div>
-                    <h3>Pedagogy Expert</h3>
-                    <div class="role">Instructional Designer</div>
-                    <span class="team-dept">XR Builders</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <div class="section-divider"></div>
-
-    <!-- CONTACT -->
-    <section style="background: rgba(0,0,0,0.2);" id="contact">
+    <!-- ══ CONTACT ══ -->
+    <section id="contact" style="background:rgba(0,0,0,0.2)">
         <div class="container">
             <div class="section-tag reveal">Get in Touch</div>
             <h2 class="section-title reveal">Contact <span>Us</span></h2>
             <div class="contact-grid">
+
                 <div class="panel contact-info-panel reveal">
                     <div class="corner-tl"></div>
-                    <!--<h3>CTLVS Lab, IIT Kharagpur</h3>-->
+                    <h3>XR Builders</h3>
+                    <p class="contact-tagline">Have a project in mind? Want a live demo? Or just want to explore how XR can transform your training pipeline? We'd love to hear from you.</p>
+
                     <div class="contact-row">
                         <div class="contact-icon">📍</div>
-                        <div>
-                            <div class="contact-label">Address</div>
-                            <div class="contact-val">XR BUILDERS, Chennai – 600026</div>
-                        </div>
+                        <div><div class="contact-label">Address</div><div class="contact-val">XR Builders, Chennai – 600026, Tamil Nadu, India</div></div>
                     </div>
                     <div class="contact-row">
                         <div class="contact-icon">✉️</div>
-                        <div>
-                            <div class="contact-label">Email</div>
-                            <div class="contact-val">naveen@xrbuilders.net</div>
-                        </div>
+                        <div><div class="contact-label">Email</div><div class="contact-val"><a href="mailto:contact@xrbuilders.net">contact@xrbuilders.net</a></div></div>
                     </div>
                     <div class="contact-row">
                         <div class="contact-icon">🌐</div>
-                        <div>
-                            <div class="contact-label">Institute</div>
-                            <div class="contact-val">www.xrbuilders.net</div>
-                        </div>
+                        <div><div class="contact-label">Website</div><div class="contact-val"><a href="https://www.xrbuilders.net" target="_blank">www.xrbuilders.net</a></div></div>
                     </div>
                     <div class="contact-row">
                         <div class="contact-icon">🕐</div>
-                        <div>
-                            <div class="contact-label">Working Hours</div>
-                            <div class="contact-val">Mon – Fri, 9:00 AM – 5:00 PM IST</div>
-                        </div>
+                        <div><div class="contact-label">Working Hours</div><div class="contact-val">Mon – Fri, 9:00 AM – 6:00 PM IST</div></div>
+                    </div>
+
+                    <div class="contact-socials">
+                        <a href="mailto:contact@xrbuilders.net" class="social-btn">✉ Email</a>
+                        <a href="https://www.xrbuilders.net" target="_blank" class="social-btn">🌐 Website</a>
                     </div>
                 </div>
 
                 <div class="panel contact-form-panel reveal">
                     <div class="corner-tl"></div>
                     <h3>Send Us a Message</h3>
-                    <div class="form-row">
-                        <label>Full Name</label>
-                        <input type="text" id="contactName" placeholder="Your name" />
+                    <div class="form-grid-2">
+                        <div class="form-row">
+                            <label>Full Name *</label>
+                            <input type="text" id="contactName" placeholder="Your name" />
+                        </div>
+                        <div class="form-row">
+                            <label>Email Address *</label>
+                            <input type="email" id="contactEmail" placeholder="you@company.com" />
+                        </div>
+                    </div>
+                    <div class="form-grid-2">
+                        <div class="form-row">
+                            <label>Organisation</label>
+                            <input type="text" id="contactOrg" placeholder="Company / Institution" />
+                        </div>
+                        <div class="form-row">
+                            <label>Inquiry Type</label>
+                            <select id="contactInquiry">
+                                <option>VR / AR Training Simulation</option>
+                                <option>Digital Twin Development</option>
+                                <option>Industrial Safety Training</option>
+                                <option>WebGL / eLearning Module</option>
+                                <option>Defence &amp; Aviation XR</option>
+                                <option>Healthcare Simulation</option>
+                                <option>Architectural Visualization</option>
+                                <option>Multiplayer XR Platform</option>
+                                <option>Demo Request</option>
+                                <option>General Inquiry</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="form-row">
-                        <label>Email Address</label>
-                        <input type="email" id="contactEmail" placeholder="you@example.com" />
+                        <label>Message *</label>
+                        <textarea id="contactMessage" placeholder="Tell us about your project, timeline, and requirements..."></textarea>
                     </div>
-                    <div class="form-row">
-                        <label>Inquiry Type</label>
-                        <select id="contactInquiry">
-                            <option>Collaboration / Research</option>
-                            <option>Training &amp; Capacity Building</option>
-                            <option>XR Project Inquiry</option>
-                            <option>Safety Training Solutions</option>
-                            <option>General Query</option>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <label>Message</label>
-                        <textarea id="contactMessage" placeholder="Tell us about your project or query..."></textarea>
-                    </div>
-                    <button class="submit-btn" onclick="sendContactEmail()">Send Message →</button>
+                    <button class="submit-btn" id="submitBtn" onclick="sendContactEmail()">Send Message →</button>
+                    <div id="form-success">✓ &nbsp;Opening your email client — message pre-filled and ready to send!</div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- ══ FOOTER ══ -->
     <footer>
         <div class="footer-inner">
             <div class="footer-top">
                 <div class="footer-brand">
                     <h2>XR Builders</h2>
-                    <!--<div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--neon-cyan);text-transform:uppercase;margin-top:4px;">Centre for Teaching, Learning & Virtual Skilling</div>-->
-                    <p>Combining immersive XR technology, modern pedagogy, and real-world industrial applications to deliver impactful, scalable digital learning solutions across India and beyond.</p>
+                    <p>Combining immersive XR technology with real-world industrial training to deliver scalable, measurable, and high-impact digital learning solutions across India and beyond.</p>
+                    <div class="footer-contact-row">✉️ <a href="mailto:contact@xrbuilders.net">contact@xrbuilders.net</a></div>
+                    <div class="footer-contact-row">🌐 <a href="https://www.xrbuilders.net" target="_blank">www.xrbuilders.net</a></div>
                 </div>
                 <div class="footer-col">
                     <h4>Solutions</h4>
@@ -1715,131 +2221,116 @@
                         <li>AR Field Applications</li>
                         <li>Digital Twins</li>
                         <li>WebXR eLearning</li>
-                        <li>Safety Training</li>
+                        <li>Multiplayer XR</li>
+                        <li>Analytics &amp; Reporting</li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Industries</h4>
                     <ul>
-                        <li>Manufacturing</li>
-                        <li>Chemical &amp; Process</li>
-                        <li>Construction</li>
-                        <li>Higher Education</li>
-                        <li>Emergency Services</li>
+                        <li>Manufacturing &amp; Industrial</li>
+                        <li>Defence &amp; Aviation</li>
+                        <li>Healthcare &amp; Medical</li>
+                        <li>Oil, Gas &amp; Energy</li>
+                        <li>Construction &amp; Mining</li>
+                        <li>Shipbuilding &amp; Marine</li>
                     </ul>
                 </div>
-                <!--<div class="footer-col">
-                    <h4>Institute</h4>
+                <div class="footer-col">
+                    <h4>Platforms</h4>
                     <ul>
-                        <li>IIT Kharagpur</li>
-                        <li>NEP 2020 Aligned</li>
-                        <li>PSSCIVE Partner</li>
-                        <li>DIKSHA Platform</li>
-                        <li>ctlvs@iitkgp.ac.in</li>
+                        <li>Meta Quest 2 / 3 / Pro</li>
+                        <li>Microsoft HoloLens 2</li>
+                        <li>HTC Vive / Focus</li>
+                        <li>WebGL / WebXR</li>
+                        <li>Android AR</li>
+                        <li>Windows PC VR</li>
                     </ul>
-                </div>-->
+                </div>
             </div>
             <div class="footer-divider"></div>
             <div class="footer-bottom">
-                <span>© 2026 XR Builders. All rights reserved.</span>
-                <!--<span>Built<span style="color:var(--neon-cyan)">■</span> at IIT Kharagpur</span>-->
+                <span>© 2026 XR Builders. All rights reserved. · Chennai, India</span>
+                <span><a href="mailto:contact@xrbuilders.net" style="color:var(--neon-cyan);text-decoration:none">contact@xrbuilders.net</a></span>
             </div>
         </div>
     </footer>
 
     <script>
-        // Custom cursor
-        const cursor = document.getElementById('cursor');
-        const cursorRing = document.getElementById('cursorRing');
-        let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX; mouseY = e.clientY;
-            cursor.style.left = mouseX - 8 + 'px';
-            cursor.style.top = mouseY - 8 + 'px';
+        /* Cursor */
+        const cursor = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
+        let mx = 0, my = 0, rx = 0, ry = 0;
+        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx - 8 + 'px'; cursor.style.top = my - 8 + 'px'; });
+        (function loop() { rx += (mx - rx - 20) * .12; ry += (my - ry - 20) * .12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); })();
+        document.querySelectorAll('a,button,.panel').forEach(el => {
+            el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2)'; ring.style.width = ring.style.height = '60px'; });
+            el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.width = ring.style.height = '40px'; });
         });
 
-        function animateRing() {
-            ringX += (mouseX - ringX - 20) * 0.12;
-            ringY += (mouseY - ringY - 20) * 0.12;
-            cursorRing.style.left = ringX + 'px';
-            cursorRing.style.top = ringY + 'px';
-            requestAnimationFrame(animateRing);
-        }
-        animateRing();
-
-        document.querySelectorAll('a, button, .panel').forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                cursor.style.transform = 'scale(2)';
-                cursorRing.style.width = '60px';
-                cursorRing.style.height = '60px';
-            });
-            el.addEventListener('mouseleave', () => {
-                cursor.style.transform = 'scale(1)';
-                cursorRing.style.width = '40px';
-                cursorRing.style.height = '40px';
-            });
-        });
-
-        // Floating particles
-        const particlesContainer = document.getElementById('particles');
-        for (let i = 0; i < 40; i++) {
-            const p = document.createElement('div');
-            p.className = 'particle';
+        /* Particles */
+        const pc = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const p = document.createElement('div'); p.className = 'particle';
             p.style.left = Math.random() * 100 + '%';
             p.style.animationDuration = (8 + Math.random() * 12) + 's';
             p.style.animationDelay = (Math.random() * 10) + 's';
-            p.style.width = p.style.height = (Math.random() > 0.7 ? 3 : 2) + 'px';
-            if (Math.random() > 0.6) p.style.background = 'rgba(180,0,255,0.6)';
-            if (Math.random() > 0.8) p.style.background = 'rgba(0,255,136,0.6)';
-            particlesContainer.appendChild(p);
+            p.style.width = p.style.height = (Math.random() > .7 ? 3 : 2) + 'px';
+            if (Math.random() > .6) p.style.background = 'rgba(180,0,255,0.6)';
+            if (Math.random() > .8) p.style.background = 'rgba(0,255,136,0.6)';
+            pc.appendChild(p);
         }
 
-        // Scroll reveal
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((e, i) => {
-                if (e.isIntersecting) {
-                    setTimeout(() => e.target.classList.add('visible'), i * 80);
-                }
-            });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        /* Scroll reveal */
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
+        }, { threshold: .08 });
+        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
 
-        // Smooth nav links
+        /* Smooth nav */
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
-                const target = document.querySelector(a.getAttribute('href'));
-                if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+                const t = document.querySelector(a.getAttribute('href'));
+                if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
             });
         });
 
-        // Nav shadow on scroll
+        /* Nav shadow */
         window.addEventListener('scroll', () => {
-            document.querySelector('nav').style.boxShadow =
-                window.scrollY > 50 ? '0 4px 40px rgba(0,0,0,0.5)' : 'none';
+            document.getElementById('mainNav').style.boxShadow = window.scrollY > 50 ? '0 4px 40px rgba(0,0,0,.5)' : 'none';
         });
 
-        // Contact form — send to naveen120197@gmail.com
+        /* ── CONTACT FORM — fixed reliable mailto ── */
         function sendContactEmail() {
             const name = document.getElementById('contactName').value.trim();
             const email = document.getElementById('contactEmail').value.trim();
+            const org = document.getElementById('contactOrg').value.trim();
             const inquiry = document.getElementById('contactInquiry').value;
             const message = document.getElementById('contactMessage').value.trim();
 
-            if (!name || !email || !message) {
-                alert('Please fill in your name, email, and message before sending.');
-                return;
-            }
+            if (!name) { alert('Please enter your name.'); return; }
+            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
+            if (!message) { alert('Please enter a message before sending.'); return; }
 
-            const subject = encodeURIComponent('XR Builders Inquiry: ' + inquiry);
-            const body = encodeURIComponent(
+            const subject = 'XR Builders Inquiry: ' + inquiry;
+            const body =
                 'Name: ' + name + '\n' +
                 'Email: ' + email + '\n' +
+                (org ? 'Organisation: ' + org + '\n' : '') +
                 'Inquiry Type: ' + inquiry + '\n\n' +
-                'Message:\n' + message
-            );
+                'Message:\n' + message;
 
-            window.location.href = 'mailto:contact@xrbuilders.net?subject=' + subject + '&body=' + body;
+            /* Create and click a real <a> element — most reliable cross-browser method */
+            const link = document.createElement('a');
+            link.href = 'mailto:contact@xrbuilders.net'
+                + '?subject=' + encodeURIComponent(subject)
+                + '&body=' + encodeURIComponent(body);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            /* Show success message */
+            document.getElementById('form-success').style.display = 'block';
+            setTimeout(() => { document.getElementById('form-success').style.display = 'none'; }, 6000);
         }
     </script>
 </body>
