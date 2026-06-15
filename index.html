@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>XR BUILDERS — Immersive XR Solutions</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <style>
         :root {
             --neon-cyan: #00f5ff;
@@ -2197,7 +2198,7 @@
                         <textarea id="contactMessage" placeholder="Tell us about your project, timeline, and requirements..."></textarea>
                     </div>
                     <button class="submit-btn" id="submitBtn" onclick="sendContactEmail()">Send Message →</button>
-                    <div id="form-success">✓ &nbsp;Opening your email client — message pre-filled and ready to send!</div>
+                    <div id="form-success">✓ &nbsp;Message sent successfully! We'll get back to you at the email you provided.</div>
                 </div>
 
             </div>
@@ -2257,81 +2258,129 @@
     </footer>
 
     <script>
-        /* Cursor */
-        const cursor = document.getElementById('cursor'), ring = document.getElementById('cursorRing');
-        let mx = 0, my = 0, rx = 0, ry = 0;
-        document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cursor.style.left = mx - 8 + 'px'; cursor.style.top = my - 8 + 'px'; });
-        (function loop() { rx += (mx - rx - 20) * .12; ry += (my - ry - 20) * .12; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(loop); })();
-        document.querySelectorAll('a,button,.panel').forEach(el => {
-            el.addEventListener('mouseenter', () => { cursor.style.transform = 'scale(2)'; ring.style.width = ring.style.height = '60px'; });
-            el.addEventListener('mouseleave', () => { cursor.style.transform = 'scale(1)'; ring.style.width = ring.style.height = '40px'; });
-        });
+/* Cursor */
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx-8+'px';cursor.style.top=my-8+'px';});
+(function loop(){rx+=(mx-rx-20)*.12;ry+=(my-ry-20)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(loop);})();
+document.querySelectorAll('a,button,.panel').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='scale(2)';ring.style.width=ring.style.height='60px';});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='scale(1)';ring.style.width=ring.style.height='40px';});
+});
 
-        /* Particles */
-        const pc = document.getElementById('particles');
-        for (let i = 0; i < 50; i++) {
-            const p = document.createElement('div'); p.className = 'particle';
-            p.style.left = Math.random() * 100 + '%';
-            p.style.animationDuration = (8 + Math.random() * 12) + 's';
-            p.style.animationDelay = (Math.random() * 10) + 's';
-            p.style.width = p.style.height = (Math.random() > .7 ? 3 : 2) + 'px';
-            if (Math.random() > .6) p.style.background = 'rgba(180,0,255,0.6)';
-            if (Math.random() > .8) p.style.background = 'rgba(0,255,136,0.6)';
-            pc.appendChild(p);
-        }
+/* Particles */
+const pc=document.getElementById('particles');
+for(let i=0;i<50;i++){
+  const p=document.createElement('div');p.className='particle';
+  p.style.left=Math.random()*100+'%';
+  p.style.animationDuration=(8+Math.random()*12)+'s';
+  p.style.animationDelay=(Math.random()*10)+'s';
+  p.style.width=p.style.height=(Math.random()>.7?3:2)+'px';
+  if(Math.random()>.6)p.style.background='rgba(180,0,255,0.6)';
+  if(Math.random()>.8)p.style.background='rgba(0,255,136,0.6)';
+  pc.appendChild(p);
+}
 
-        /* Scroll reveal */
-        const obs = new IntersectionObserver(entries => {
-            entries.forEach((e, i) => { if (e.isIntersecting) setTimeout(() => e.target.classList.add('visible'), i * 80); });
-        }, { threshold: .08 });
-        document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+/* Scroll reveal */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('visible'),i*80);});
+},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 
-        /* Smooth nav */
-        document.querySelectorAll('a[href^="#"]').forEach(a => {
-            a.addEventListener('click', e => {
-                const t = document.querySelector(a.getAttribute('href'));
-                if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
-            });
-        });
+/* Smooth nav */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'});}
+  });
+});
 
-        /* Nav shadow */
-        window.addEventListener('scroll', () => {
-            document.getElementById('mainNav').style.boxShadow = window.scrollY > 50 ? '0 4px 40px rgba(0,0,0,.5)' : 'none';
-        });
+/* Nav shadow */
+window.addEventListener('scroll',()=>{
+  document.getElementById('mainNav').style.boxShadow=window.scrollY>50?'0 4px 40px rgba(0,0,0,.5)':'none';
+});
 
-        /* ── CONTACT FORM — fixed reliable mailto ── */
-        function sendContactEmail() {
-            const name = document.getElementById('contactName').value.trim();
-            const email = document.getElementById('contactEmail').value.trim();
-            const org = document.getElementById('contactOrg').value.trim();
-            const inquiry = document.getElementById('contactInquiry').value;
-            const message = document.getElementById('contactMessage').value.trim();
+/* ── EMAILJS SETUP ──────────────────────────────────────────
+   SETUP STEPS (one-time, takes ~5 minutes):
+   1. Go to https://www.emailjs.com and sign up (free — 200 emails/month)
+   2. Dashboard → Email Services → Add Service → choose Gmail
+      → Connect your contact@xrbuilders.net Gmail account
+      → Copy the Service ID  →  paste below as EMAILJS_SERVICE_ID
+   3. Dashboard → Email Templates → Create Template
+      Use these exact variables in your template:
+        To Email   : contact@xrbuilders.net
+        Reply To   : {{reply_to}}
+        Subject    : {{subject}}
+        Body       :
+          Name: {{from_name}}
+          Email: {{from_email}}
+          Organisation: {{organisation}}
+          Inquiry Type: {{inquiry_type}}
 
-            if (!name) { alert('Please enter your name.'); return; }
-            if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
-            if (!message) { alert('Please enter a message before sending.'); return; }
+          Message:
+          {{message}}
+      → Copy the Template ID  →  paste below as EMAILJS_TEMPLATE_ID
+   4. Dashboard → Account → Public Key
+      → paste below as EMAILJS_PUBLIC_KEY
+─────────────────────────────────────────────────────────── */
+const EMAILJS_PUBLIC_KEY   = 'YOUR_PUBLIC_KEY';    // ← paste here
+const EMAILJS_SERVICE_ID   = 'YOUR_SERVICE_ID';    // ← paste here
+const EMAILJS_TEMPLATE_ID  = 'YOUR_TEMPLATE_ID';   // ← paste here
 
-            const subject = 'XR Builders Inquiry: ' + inquiry;
-            const body =
-                'Name: ' + name + '\n' +
-                'Email: ' + email + '\n' +
-                (org ? 'Organisation: ' + org + '\n' : '') +
-                'Inquiry Type: ' + inquiry + '\n\n' +
-                'Message:\n' + message;
+emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
 
-            /* Create and click a real <a> element — most reliable cross-browser method */
-            const link = document.createElement('a');
-            link.href = 'mailto:contact@xrbuilders.net'
-                + '?subject=' + encodeURIComponent(subject)
-                + '&body=' + encodeURIComponent(body);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+function sendContactEmail(){
+  const name    = document.getElementById('contactName').value.trim();
+  const email   = document.getElementById('contactEmail').value.trim();
+  const org     = document.getElementById('contactOrg').value.trim();
+  const inquiry = document.getElementById('contactInquiry').value;
+  const message = document.getElementById('contactMessage').value.trim();
 
-            /* Show success message */
-            document.getElementById('form-success').style.display = 'block';
-            setTimeout(() => { document.getElementById('form-success').style.display = 'none'; }, 6000);
-        }
+  if(!name){    alert('Please enter your name.');              return; }
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+                alert('Please enter a valid email address.');  return; }
+  if(!message){ alert('Please enter a message.');              return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled   = true;
+  btn.textContent = 'Sending…';
+  btn.style.opacity = '0.7';
+
+  const templateParams = {
+    from_name     : name,
+    from_email    : email,
+    reply_to      : email,
+    organisation  : org || 'Not provided',
+    inquiry_type  : inquiry,
+    subject       : 'XR Builders Inquiry: ' + inquiry,
+    message       : message
+  };
+
+  emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+    .then(() => {
+      btn.textContent  = 'Message Sent ✓';
+      btn.style.opacity = '1';
+      btn.style.background = 'var(--neon-green)';
+      document.getElementById('form-success').style.display = 'block';
+      // clear the form
+      ['contactName','contactEmail','contactOrg','contactMessage'].forEach(id=>{
+        document.getElementById(id).value = '';
+      });
+      setTimeout(()=>{
+        btn.disabled = false;
+        btn.textContent = 'Send Message →';
+        btn.style.background = 'var(--neon-cyan)';
+        document.getElementById('form-success').style.display = 'none';
+      }, 6000);
+    })
+    .catch(err => {
+      console.error('EmailJS error:', err);
+      btn.disabled = false;
+      btn.textContent = 'Send Message →';
+      btn.style.opacity = '1';
+      alert('Failed to send message. Please email us directly at contact@xrbuilders.net');
+    });
+}
     </script>
 </body>
 </html>
